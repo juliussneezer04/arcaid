@@ -21,7 +21,7 @@ export default function Requests() {
                 Requests Made
               </h1>
               <p className="mt-2 text-sm text-gray-700">
-                An overview of all the requests you've made to your school
+                An overview of all the requests you&apos;ve made to your school
                 co-ordinator.
               </p>
             </div>

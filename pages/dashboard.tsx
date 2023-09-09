@@ -17,6 +17,6 @@ export default function DashboardPage() {
         <UserButton afterSignOutUrl="/" />
       </header>
       {isAdmin ? <Requests /> : <Applications />}
-    </>
+    </div>
   );
 }
