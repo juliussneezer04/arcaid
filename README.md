@@ -1,4 +1,29 @@
+# Z-THEA
+
+## Description:
+
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+
+## Prerequisites
+
+Before you begin, ensure you have met the following requirements:
+
+- You have installed Node.js and yarn
+- You have an OpenAI API key
+
+Note: | Make sure to keep your API keys secret and never share them with anyone.
+
+## Setup and Configuration
+
+1. Install the required dependencies: `yarn`
+1. Create a `config.json` file in the project's src directory to store your API keys:
+
+```
+{
+  "OPENAI_ORGANISATION": "<your-organisation-key-here>",
+  "OPENAI_APIKEY": "<your-api-key-here>"
+}
+```
 
 ## Getting Started
 
