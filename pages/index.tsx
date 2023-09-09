@@ -9,11 +9,11 @@ import {
   ServerIcon,
 } from "@heroicons/react/20/solid";
 
-const navigation = [
-  { name: "Product", href: "#" },
-  { name: "Features", href: "#" },
-  { name: "Marketplace", href: "#" },
-  { name: "Company", href: "#" },
+const navigation: any[] = [
+  // { name: "Product", href: "#" },
+  // { name: "Features", href: "#" },
+  // { name: "Marketplace", href: "#" },
+  // { name: "Company", href: "#" },
 ];
 const primaryFeatures = [
   {
@@ -357,9 +357,9 @@ export default function Example() {
               <div className="flex">
                 <div className="relative flex items-center gap-x-4 rounded-full px-4 py-1 text-sm leading-6 text-gray-600 ring-1 ring-gray-900/10 hover:ring-gray-900/20">
                   <span className="font-semibold text-indigo-600">
-                    We’re hiring
+                    Introducing
                   </span>
-                  <span
+                  {/* <span
                     className="h-4 w-px bg-gray-900/10"
                     aria-hidden="true"
                   />
@@ -370,11 +370,11 @@ export default function Example() {
                       className="-mr-2 h-5 w-5 text-gray-400"
                       aria-hidden="true"
                     />
-                  </a>
+                  </a> */}
                 </div>
               </div>
               <h1 className="mt-10 max-w-lg text-4xl font-bold tracking-tight text-gray-900 sm:text-6xl">
-                A better way to ship your projects
+                Z-Thea 
               </h1>
               <p className="mt-6 text-lg leading-8 text-gray-600">
                 Esse id magna consectetur fugiat non dolor in ad laboris magna
