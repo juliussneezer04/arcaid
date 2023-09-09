@@ -1,7 +1,5 @@
 import React, { useState, useEffect, use } from "react";
 
-import prisma from "@/utils/db";
-
 export default function Applications() {
   const [records, setRecords] = useState([]);
 
