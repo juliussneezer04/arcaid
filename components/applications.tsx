@@ -188,6 +188,14 @@ export default function Applications() {
                           <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
                             {record.applicationHash}
                           </td>
+                          <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
+                            <a
+                              href="#"
+                              className="text-indigo-600 hover:text-indigo-900"
+                            >
+                              Verify
+                            </a>
+                          </td>
                         </tr>
                       ))}
                     </tbody>
