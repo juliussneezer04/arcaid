@@ -13,7 +13,7 @@ export default function DashboardPage() {
 
   return (
     <>
-      <header>
+      <header className="flex justify-end py-5 px-10">
         <UserButton afterSignOutUrl="/" />
       </header>
       {isAdmin ? <Requests /> : <Applications />}

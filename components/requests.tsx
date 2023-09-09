@@ -13,7 +13,7 @@ const records = [
 export default function Requests() {
   return (
     <main>
-      <div className="relative isolate overflow-hidden pt-32">
+      <div className="relative isolate overflow-hidden pt-6">
         <div className="px-4 sm:px-6 lg:px-8">
           <div className="sm:flex sm:items-center">
             <div className="sm:flex-auto">
