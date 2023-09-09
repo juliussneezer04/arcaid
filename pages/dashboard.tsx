@@ -12,11 +12,11 @@ export default function DashboardPage() {
   );
 
   return (
-    <div className="h-screen bg-white">
-      <header>
+    <>
+      <header className="flex justify-end py-5 px-10">
         <UserButton afterSignOutUrl="/" />
       </header>
       {isAdmin ? <Requests /> : <Applications />}
-    </div>
+    </>
   );
 }
