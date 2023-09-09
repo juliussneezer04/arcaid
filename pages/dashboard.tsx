@@ -12,11 +12,11 @@ export default function DashboardPage() {
   );
 
   return (
-    <>
+    <div className="h-screen bg-white">
       <header>
         <UserButton afterSignOutUrl="/" />
       </header>
       {isAdmin ? <Requests /> : <Applications />}
-    </>
+    </div>
   );
 }
