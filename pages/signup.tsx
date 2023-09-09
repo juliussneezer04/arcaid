@@ -1,3 +1,6 @@
+import Link from "next/link";
+import React from "react";
+
 export default function SignupPage() {
   return (
     <main className="h-screen bg-white">
@@ -14,7 +17,7 @@ export default function SignupPage() {
         </div>
 
         <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
-          <form className="space-y-6" action="#" method="POST">
+          {/* <form className="space-y-6" action="#" method="POST">
             <div>
               <label htmlFor="email" className="block text-sm font-medium leading-6 text-gray-900">
                 Email address
@@ -49,24 +52,29 @@ export default function SignupPage() {
               </div>
             </div>
 
-            <div>
+          </form> */}
+          <div>
+            <Link href="/dashboard">
               <button
                 type="submit"
                 className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
               >
-                Sign up
+                Register USB
               </button>
-            </div>
-          </form>
+            </Link>
+          </div>
 
           <p className="mt-10 text-center text-sm text-gray-500">
-            Already a member?{' '}
-            <a href="login" className="font-semibold leading-6 text-indigo-600 hover:text-indigo-500">
+            Already a member?{" "}
+            <a
+              href="login"
+              className="font-semibold leading-6 text-indigo-600 hover:text-indigo-500"
+            >
               Sign In
             </a>
           </p>
         </div>
       </div>
     </main>
-  )
+  );
 }
