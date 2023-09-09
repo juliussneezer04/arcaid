@@ -71,7 +71,7 @@ export default function Applications() {
                 Records
               </h1>
               <p className="mt-2 text-sm text-gray-700">
-                A list of all the financial aid applications you've applied!
+                A list of all the financial aid applications you have made.
               </p>
             </div>
             <div className="mt-4 sm:ml-16 sm:mt-0 sm:flex-none">
