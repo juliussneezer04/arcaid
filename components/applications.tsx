@@ -26,7 +26,7 @@ export default function Applications() {
                 Records
               </h1>
               <p className="mt-2 text-sm text-gray-700">
-                A list of all the medical records you've submitted and stored!
+                A list of all the medical records you&apos;ve submitted and stored!
               </p>
             </div>
             <div className="mt-4 sm:ml-16 sm:mt-0 sm:flex-none">
