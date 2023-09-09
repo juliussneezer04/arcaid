@@ -20,7 +20,7 @@ export default function AuthNavWrapper(props: { children: React.ReactNode }) {
             </button>
             <img
               className="h-8 w-auto"
-              src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600"
+              src="/z-thea-logo.png"
               alt="Your Company"
             />
           </div>
@@ -64,7 +64,7 @@ export default function AuthNavWrapper(props: { children: React.ReactNode }) {
                   <span className="sr-only">Your Company</span>
                   <img
                     className="h-8 w-auto"
-                    src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600"
+                    src="/z-thea-logo.png"
                     alt=""
                   />
                 </a>

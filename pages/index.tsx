@@ -233,7 +233,7 @@ export default function LandingPage() {
               <span className="sr-only">Your Company</span>
               <img
                 className="h-8 w-auto"
-                src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600"
+                src="/z-thea-logo.png"
                 alt=""
               />
             </a>
@@ -281,7 +281,7 @@ export default function LandingPage() {
                 <span className="sr-only">Your Company</span>
                 <img
                   className="h-8 w-auto"
-                  src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600"
+                  src="/z-thea-logo.png"
                   alt=""
                 />
               </a>
@@ -375,7 +375,7 @@ export default function LandingPage() {
                 </div>
               </div>
               <h1 className="mt-10 max-w-lg text-4xl font-bold tracking-tight text-gray-900 sm:text-6xl">
-                Z-Thea 
+                Z-Thea
               </h1>
               <p className="mt-6 text-lg leading-8 text-gray-600">
                 Esse id magna consectetur fugiat non dolor in ad laboris magna
