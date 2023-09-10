@@ -443,7 +443,7 @@ export default function LandingPage() {
                           aria-hidden="true"
                         />
                         {feature.name}
-                      </dt>
+                      </dt>{" "}
                       <dd className="inline">{feature.description}</dd>
                     </div>
                   ))}
