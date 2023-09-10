@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useCallback } from "react";
 import Button from "@mui/material/Button";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
@@ -6,10 +6,11 @@ import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 import ClipLoader from "react-spinners/ClipLoader";
-
-import animation_lmd0dti7 from "../assets/animation_lmd0dti7.json"
+import animation_lmd0dti7 from "../assets/animation_lmd0dti7.json";
 import Lottie from "lottie-react";
 import { Box } from "@mui/material";
+import { ARCAID_CREATE_FINANCIAL_RECORD_CODE } from "@/config";
+import { cn } from "@/lib/utils";
 
 type Application = {
   studentIncome: number;
@@ -28,7 +29,37 @@ export default function Applications() {
     setOpen(true);
   };
 
-  const handleSubmit = (e: React.MouseEvent<HTMLButtonElement>) => {
+  const executeCreation = useCallback(
+    async (factor1: number, factor2: number, factor3: number) => {
+      const programManager = new ProgramManager(
+        undefined,
+        undefined,
+        undefined
+      );
+
+      // Create a temporary account for the execution of the program
+      // TODO Use a fixed account.
+      const account = new Account();
+      programManager.setAccount(account);
+
+      // Get the response and ensure that the program executed correctly
+      // WARNING - This function takes a long time on first run
+      const executionResponse = await programManager.executeOffline(
+        ARCAID_CREATE_FINANCIAL_RECORD_CODE,
+        "main",
+        [factor1.toString(), factor2.toString(), factor3.toString()].map(
+          (x) => `${x}u32`
+        ),
+        false
+      );
+      const result = executionResponse.getOutputs();
+      alert(`Converted to a Secure Record`);
+      return result?.[0] || "";
+    },
+    []
+  );
+
+  const handleSubmit = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     const formData = new FormData();
     formData.append("file", file!);
@@ -38,21 +69,29 @@ export default function Applications() {
         "content-type": "multipart/form-data",
       },
     };
-    // TODO: call blockchain to create record
+    const studentIncome = 5000;
+    const householdIncome = 50000;
+    const expectedFamilyContribution = 5000;
+
     setProcessing(true);
+    const hashValue = await executeCreation(
+      studentIncome,
+      householdIncome,
+      expectedFamilyContribution
+    );
     setTimeout(() => {
       handleClose();
       setRecords([
         {
-          studentIncome: 5000,
-          householdIncome: 50000,
-          expectedFamilyContribution: 5000,
-          applicationHash: "0x123456789",
+          studentIncome,
+          householdIncome,
+          expectedFamilyContribution,
+          applicationHash: hashValue,
         },
       ]);
       setProcessing(false);
       setFile(undefined);
-    }, 10000);
+    }, 8000);
   };
 
   const handleClose = () => {
@@ -77,15 +116,18 @@ export default function Applications() {
 
   return (
     <main>
-      <Dialog open={checkOpen} onClose={handleCheckClose} maxWidth={'sm'} fullWidth>
+      <Dialog
+        open={checkOpen}
+        onClose={handleCheckClose}
+        maxWidth={"sm"}
+        fullWidth
+      >
         <DialogTitle>Check Verification</DialogTitle>
         <DialogContent>
-          <Box maxWidth={'100px'}>
+          <Box maxWidth={"100px"}>
             <Lottie animationData={animation_lmd0dti7} loop={false} />
           </Box>
-          <DialogContentText>
-            Verified
-          </DialogContentText>
+          <DialogContentText>Verified</DialogContentText>
         </DialogContent>
         <DialogActions>
           <Button onClick={handleCheckClose}>Close</Button>
@@ -107,9 +149,12 @@ export default function Applications() {
               <button
                 type="button"
                 onClick={addRecord}
-                className="block rounded-md bg-indigo-600 px-3 py-2 text-center text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                className={cn(
+                  processing ? "animate-pulse" : "",
+                  "block rounded-md bg-indigo-600 px-3 py-2 text-center text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                )}
               >
-                Add Record
+                {!processing ? "Add Record" : "Loading..."}
               </button>
             </div>
           </div>
@@ -138,8 +183,13 @@ export default function Applications() {
             )}
 
             <DialogActions>
-              <Button onClick={handleClose}>Cancel</Button>
-              {file && <Button onClick={handleSubmit}>Submit</Button>}
+              <div className="flex flex-col space-y-2 justify-center py-4 px-2">
+                <Button onClick={handleClose}>Cancel</Button>
+                {file && <Button onClick={handleSubmit}>Submit</Button>}
+                <div>
+                  Do note that this is a <i>long</i> process!
+                </div>
+              </div>
             </DialogActions>
           </Dialog>
 
@@ -178,7 +228,10 @@ export default function Applications() {
                   <tbody className="bg-white">
                     {records.length === 0 ? (
                       <tr>
-                        <td colSpan={5} className="px-3 py-4 text-center text-sm text-gray-500">
+                        <td
+                          colSpan={5}
+                          className="px-3 py-4 text-center text-sm text-gray-500"
+                        >
                           No rows available
                         </td>
                       </tr>
