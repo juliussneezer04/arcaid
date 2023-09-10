@@ -316,8 +316,7 @@ export default function LandingPage() {
                 ArcAid
               </h1>
               <p className="mx-auto mt-6 text-lg leading-8 text-gray-600">
-                Apply for Financial Aid: The 100% Private Tool that gets you to
-                Aid the Fastest
+                Apply for Financial Aid with ArcAid: The 100% Private and Fastest Tool for Aid
               </p>
               <div className="mt-10 flex items-center justify-center gap-x-6">
                 <a
