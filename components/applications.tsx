@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useCallback } from "react";
+import Image from "next/image";
 import Button from "@mui/material/Button";
 import Box from "@mui/material/Box";
 import Dialog from "@mui/material/Dialog";
@@ -12,10 +13,9 @@ import FormControl from "@mui/material/FormControl";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
 import Lottie from "lottie-react";
 
-import animation_lmd22m25 from "../assets/animation_lmd22m25.json"
+import animation_lmd22m25 from "../assets/animation_lmd22m25.json";
 import animation_lmd0dti7 from "../assets/animation_lmd0dti7.json";
 import StyledDropzone from "./dropzone";
-
 
 type Application = {
   studentIncome: string;
@@ -37,11 +37,9 @@ export default function Applications() {
   const [open, setOpen] = useState(false);
   const [file, setFile] = useState<File | null>(null);
   const [processing, setProcessing] = useState(false);
-  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     const getApplications = async () => {
-      setLoading(true);
       const response = await fetch("/api/applications");
       let userApplications: Application[] = await response.json();
 
@@ -53,7 +51,6 @@ export default function Applications() {
         applicationHash: application.applicationHash,
       }));
       setApplications(userApplications);
-      setLoading(false);
     };
 
     getApplications();
@@ -127,15 +124,18 @@ export default function Applications() {
 
   return (
     <main>
-      <Dialog open={checkOpen} onClose={handleCheckClose} maxWidth={'sm'} fullWidth>
+      <Dialog
+        open={checkOpen}
+        onClose={handleCheckClose}
+        maxWidth={"sm"}
+        fullWidth
+      >
         <DialogTitle>Check Eligibility</DialogTitle>
         <DialogContent>
           <Box maxWidth={"100px"}>
             <Lottie animationData={animation_lmd0dti7} loop={false} />
           </Box>
-          <DialogContentText>
-            Eligible
-          </DialogContentText>
+          <DialogContentText>Eligible</DialogContentText>
         </DialogContent>
         <DialogActions>
           <Button onClick={handleCheckClose}>Close</Button>
@@ -168,7 +168,7 @@ export default function Applications() {
             <DialogTitle>Financial Aid Application</DialogTitle>
             <DialogContent>
               <DialogContentText>
-                {processing ? ("Loading...") : ("Upload your financial document")}
+                {processing ? "Loading..." : "Upload your financial document"}
               </DialogContentText>
               {processing ? (
                 <Box
@@ -178,14 +178,14 @@ export default function Applications() {
                   width="100%"
                   height="100%"
                 >
-                  <Lottie
-                    animationData={animation_lmd22m25}
-                    loop={true}
-                  />
+                  <Lottie animationData={animation_lmd22m25} loop={true} />
                 </Box>
               ) : (
                 <>
-                  <StyledDropzone selectedFile={file} setSelectedFile={setFile} />
+                  <StyledDropzone
+                    selectedFile={file}
+                    setSelectedFile={setFile}
+                  />
 
                   <FormControl fullWidth sx={{ marginTop: 2 }}>
                     <InputLabel id="demo-simple-select-label">
@@ -206,27 +206,28 @@ export default function Applications() {
                     </Select>
                   </FormControl>
                 </>
-
               )}
             </DialogContent>
 
             {!processing && (
               <DialogActions>
                 <button
-                  className="border border-blue-500 text-blue-500 hover:border-blue-700 hover:text-blue-700 font-bold py-2 px-4 rounded-full mr-2 shadow-sm dark:border-blue-400 dark:text-blue-400 dark:hover:border-blue-300 dark:hover:text-blue-300"
-                  onClick={handleClose}>
+                  className="mr-2 rounded-full border border-blue-500 px-4 py-2 font-bold text-blue-500 shadow-sm hover:border-blue-700 hover:text-blue-700 dark:border-blue-400 dark:text-blue-400 dark:hover:border-blue-300 dark:hover:text-blue-300"
+                  onClick={handleClose}
+                >
                   Cancel
                 </button>
                 {file && institution && (
                   <button
-                    className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full shadow-sm dark:bg-blue-400 dark:hover:bg-blue-300"
-                    onClick={handleSubmit}>
+                    className="rounded-full bg-blue-500 px-4 py-2 font-bold text-white shadow-sm hover:bg-blue-700 dark:bg-blue-400 dark:hover:bg-blue-300"
+                    onClick={handleSubmit}
+                  >
                     Submit
                   </button>
                 )}
               </DialogActions>
             )}
-          </Dialog >
+          </Dialog>
 
           <div className="mt-8 flow-root">
             <div className="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
@@ -269,14 +270,18 @@ export default function Applications() {
                   <tbody className="bg-white">
                     {applications.length === 0 ? (
                       <tr>
-                        <td colSpan={5} className="px-3 py-4 text-center text-sm text-gray-500">
-                          <img
-                            className="col-span-2 max-h-36 w-full object-contain lg:col-span-1"
-                            src="/arcaid (1).png"
+                        <td
+                          colSpan={5}
+                          className="px-3 py-4 text-center text-sm text-gray-500"
+                        >
+                          <Image
+                            src="/arcaid_1.png"
                             width={100}
                             height={100}
+                            className="col-span-2 max-h-36 w-full object-contain lg:col-span-1"
+                            alt="ArcAid"
                           />
-                          No records found
+                          No applications found
                         </td>
                       </tr>
                     ) : (
@@ -307,15 +312,14 @@ export default function Applications() {
                           </td>
                         </tr>
                       ))
-                    )
-                    }
-                  </tbody >
-                </table >
-              </div >
-            </div >
-          </div >
-        </div >
-      </div >
-    </main >
+                    )}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
   );
 }
