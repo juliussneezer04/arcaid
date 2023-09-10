@@ -66,9 +66,9 @@ export default function Applications({ apps }: { apps?: Application[] }) {
     // TODO: call blockchain to get applicationHash
 
     const newApplication: Application = {
-      studentIncome: "5000",
-      householdIncome: "500",
-      expectedFamilyContribution: "500",
+      studentIncome: "2150",
+      householdIncome: "9800",
+      expectedFamilyContribution: "1500",
       institution: institution,
       applicationHash:
         "{ owner: aleo164t4l4xvs0g0lf592exekxdfet5tv8q3dfd68arp77yrm8srnsys48vsj9.private, microcredits: 0u64.private, factor1: 500u32.private, factor2: 500u32.private, factor3: 50u32.private, _nonce: 2556023670012556610248357751778470505697587013303070071658643471341827061153group.public }",
