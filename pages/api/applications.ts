@@ -36,18 +36,25 @@ export default async function handler(
     }
     return res.status(200).json(applications);
   } else if (req.method === "POST") {
-    const applicationHash = JSON.parse(req.body).applicationHash;
+    const { institution, applicationHash } = JSON.parse(req.body);
 
     if (!applicationHash) {
       return res.status(400).json({ error: "Missing applicationHash" });
     }
+    if (!institution) {
+      return res.status(400).json({ error: "Missing institution" });
+    }
 
-    await prisma.application.create({
+    const createRes = await prisma.application.create({
       data: {
         email: email,
         applicationHash: applicationHash,
+        institution: institution,
       },
     });
+    if (!createRes) {
+      return res.status(500).json({ error: "Failed to save application" });
+    }
     return res.status(200).json({ message: "Application saved in database" });
   }
 }

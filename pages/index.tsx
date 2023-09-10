@@ -1,10 +1,9 @@
 import React, { useState } from "react";
 import { Dialog } from "@headlessui/react";
 import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
-import Image from 'next/image';
+import Image from "next/image";
 import {
   ArrowPathIcon,
-  ChevronRightIcon,
   CloudArrowUpIcon,
   LockClosedIcon,
   ServerIcon,
@@ -12,29 +11,20 @@ import {
 import Link from "next/link";
 import { useAuth } from "@clerk/nextjs";
 
-const navigation: any[] = [
-  // { name: "Product", href: "#" },
-  // { name: "Features", href: "#" },
-  // { name: "Marketplace", href: "#" },
-  // { name: "Company", href: "#" },
-];
 const primaryFeatures = [
   {
     name: "Masked Data:",
-    description:
-      "Apply without revealing exact finances",
+    description: "Apply without revealing exact finances",
     icon: CloudArrowUpIcon,
   },
   {
     name: "Bulk Apply:",
-    description:
-      "Apply for multiple schools with one click",
+    description: "Apply for multiple schools with one click",
     icon: LockClosedIcon,
   },
   {
     name: "Instant Verify:",
-    description:
-      "Know your eligibility in real time",
+    description: "Know your eligibility in real time",
     icon: ServerIcon,
   },
   {
@@ -42,7 +32,7 @@ const primaryFeatures = [
     description:
       "Zero-Knowledge Proofs keep your financial data private. Schools only see 'Eligible' or 'Not Eligible'",
     icon: ServerIcon,
-  }
+  },
 ];
 const secondaryFeatures = [
   {
@@ -73,7 +63,7 @@ const featuredTestimonial = {
     name: "Brenna G.",
     handle: "Graduate Applicant",
     imageUrl:
-      "https://images.unsplash.com/photo-1550525811-e5869dd03032?ixlib=rb-=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=1024&h=1024&q=80"
+      "https://images.unsplash.com/photo-1550525811-e5869dd03032?ixlib=rb-=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=1024&h=1024&q=80",
   },
 };
 const testimonials = [
@@ -89,7 +79,7 @@ const testimonials = [
         },
       },
       // More testimonials...
-    ]
+    ],
   ],
   [
     [
@@ -112,7 +102,7 @@ const footerNavigation = {
       name: "Facebook",
       href: "#",
       icon: (
-        props: React.JSX.IntrinsicAttributes & React.SVGProps<SVGSVGElement>
+        props: React.JSX.IntrinsicAttributes & React.SVGProps<SVGSVGElement>,
       ) => (
         <svg fill="currentColor" viewBox="0 0 24 24" {...props}>
           <path
@@ -127,7 +117,7 @@ const footerNavigation = {
       name: "Instagram",
       href: "#",
       icon: (
-        props: React.JSX.IntrinsicAttributes & React.SVGProps<SVGSVGElement>
+        props: React.JSX.IntrinsicAttributes & React.SVGProps<SVGSVGElement>,
       ) => (
         <svg fill="currentColor" viewBox="0 0 24 24" {...props}>
           <path
@@ -142,7 +132,7 @@ const footerNavigation = {
       name: "Twitter",
       href: "#",
       icon: (
-        props: React.JSX.IntrinsicAttributes & React.SVGProps<SVGSVGElement>
+        props: React.JSX.IntrinsicAttributes & React.SVGProps<SVGSVGElement>,
       ) => (
         <svg fill="currentColor" viewBox="0 0 24 24" {...props}>
           <path d="M8.29 20.251c7.547 0 11.675-6.253 11.675-11.675 0-.178 0-.355-.012-.53A8.348 8.348 0 0022 5.92a8.19 8.19 0 01-2.357.646 4.118 4.118 0 001.804-2.27 8.224 8.224 0 01-2.605.996 4.107 4.107 0 00-6.993 3.743 11.65 11.65 0 01-8.457-4.287 4.106 4.106 0 001.27 5.477A4.072 4.072 0 012.8 9.713v.052a4.105 4.105 0 003.292 4.022 4.095 4.095 0 01-1.853.07 4.108 4.108 0 003.834 2.85A8.233 8.233 0 012 18.407a11.616 11.616 0 006.29 1.84" />
@@ -153,7 +143,7 @@ const footerNavigation = {
       name: "GitHub",
       href: "#",
       icon: (
-        props: React.JSX.IntrinsicAttributes & React.SVGProps<SVGSVGElement>
+        props: React.JSX.IntrinsicAttributes & React.SVGProps<SVGSVGElement>,
       ) => (
         <svg fill="currentColor" viewBox="0 0 24 24" {...props}>
           <path
@@ -168,7 +158,7 @@ const footerNavigation = {
       name: "YouTube",
       href: "#",
       icon: (
-        props: React.JSX.IntrinsicAttributes & React.SVGProps<SVGSVGElement>
+        props: React.JSX.IntrinsicAttributes & React.SVGProps<SVGSVGElement>,
       ) => (
         <svg fill="currentColor" viewBox="0 0 24 24" {...props}>
           <path
@@ -203,11 +193,7 @@ export default function LandingPage() {
           <div className="flex lg:flex-1">
             <a href="#" className="-m-1.5 p-1.5">
               <span className="sr-only">Your Company</span>
-              <img
-                className="h-8 w-auto"
-                src="/z-thea-logo.png"
-                alt=""
-              />
+              <img className="h-8 w-auto" src="/z-thea-logo.png" alt="" />
             </a>
           </div>
           <div className="flex lg:hidden">
@@ -219,17 +205,6 @@ export default function LandingPage() {
               <span className="sr-only">Open main menu</span>
               <Bars3Icon className="h-6 w-6" aria-hidden="true" />
             </button>
-          </div>
-          <div className="hidden lg:flex lg:gap-x-12">
-            {navigation.map((item) => (
-              <a
-                key={item.name}
-                href={item.href}
-                className="text-sm font-semibold leading-6 text-gray-900"
-              >
-                {item.name}
-              </a>
-            ))}
           </div>
           <div className="hidden lg:flex lg:flex-1 lg:justify-end">
             {signedIn ? (
@@ -260,11 +235,7 @@ export default function LandingPage() {
             <div className="flex items-center justify-between">
               <a href="#" className="-m-1.5 p-1.5">
                 <span className="sr-only">Your Company</span>
-                <img
-                  className="h-8 w-auto"
-                  src="/z-thea-logo.png"
-                  alt=""
-                />
+                <img className="h-8 w-auto" src="/z-thea-logo.png" alt="" />
               </a>
               <button
                 type="button"
@@ -277,17 +248,6 @@ export default function LandingPage() {
             </div>
             <div className="mt-6 flow-root">
               <div className="-my-6 divide-y divide-gray-500/10">
-                <div className="space-y-2 py-6">
-                  {navigation.map((item) => (
-                    <a
-                      key={item.name}
-                      href={item.href}
-                      className="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50"
-                    >
-                      {item.name}
-                    </a>
-                  ))}
-                </div>
                 <div className="py-6">
                   {signedIn ? (
                     <Link
@@ -313,7 +273,7 @@ export default function LandingPage() {
 
       <main>
         {/* Hero section */}
-        <div className="relative isolate pt-14 mb-16">
+        <div className="relative isolate mb-16 pt-14">
           <svg
             className="absolute inset-0 -z-10 h-full w-full stroke-gray-200 [mask-image:radial-gradient(100%_100%_at_top_right,white,transparent)]"
             aria-hidden="true"
@@ -344,21 +304,21 @@ export default function LandingPage() {
             />
           </svg>
           <div className="mx-auto max-w-7xl px-6 py-24 sm:py-32 lg:flex lg:items-center lg:gap-x-10 lg:px-8 lg:py-40">
-
-            <div className="mx-auto max-w-2xl lg:mx-0 lg:flex-auto text-center"> 
-              <img
+            <div className="mx-auto max-w-2xl text-center lg:mx-0 lg:flex-auto">
+              <Image
                 className="mx-auto max-h-36 w-full object-contain"
                 src="/arcaid.png"
                 width={474}
                 height={144}
+                alt="ArcAid"
               />
-              <h1 className="mt-10 max-w-lg text-4xl font-bold tracking-tight text-gray-900 sm:text-6xl mx-auto"> 
+              <h1 className="mx-auto mt-10 max-w-lg text-4xl font-bold tracking-tight text-gray-900 sm:text-6xl">
                 ArcAid
               </h1>
-              <p className="mt-6 text-lg leading-8 text-gray-600 mx-auto">
+              <p className="mx-auto mt-6 text-lg leading-8 text-gray-600">
                 Apply for Financial Aid: The Faster, More Private Way
               </p>
-              <div className="mt-10 flex items-center gap-x-6 justify-center"> {/* Added justify-center */}
+              <div className="mt-10 flex items-center justify-center gap-x-6">
                 <a
                   href="#"
                   className="rounded-md bg-indigo-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
@@ -373,7 +333,6 @@ export default function LandingPage() {
                 </a>
               </div>
             </div>
-
 
             <div className="mt-16 sm:mt-24 lg:mt-0 lg:flex-shrink-0 lg:flex-grow">
               <svg
@@ -412,61 +371,62 @@ export default function LandingPage() {
         </div>
 
         {/* Logo cloud */}
-        <div className="mx-auto max-w-7xl px-6 lg:px-8 mb-16">
+        <div className="mx-auto mb-16 max-w-7xl px-6 lg:px-8">
           <div className="mx-auto grid max-w-lg grid-cols-4 items-center gap-x-8 gap-y-12 sm:max-w-xl sm:grid-cols-6 sm:gap-x-10 sm:gap-y-14 lg:mx-0 lg:max-w-none lg:grid-cols-5">
-            <img
+            <Image
               className="col-span-2 max-h-36 w-full object-contain lg:col-span-1"
               src="/kisspng-harvard-university-logo-harvard-crimson-football-5b915f071e0344.9092574415362537031229.png"
               alt="Transistor"
               width={474}
               height={144}
             />
-            <img
+            <Image
               className="col-span-2 max-h-24 w-full object-contain lg:col-span-1"
               src="/MIT-Logo.png"
               alt="Reform"
               width={316}
               height={96}
             />
-            <img
+            <Image
               className="col-span-2 max-h-12 w-full object-contain lg:col-span-1"
               src="/National_University_of_Singapore_logo_NUS.png"
               alt="Tuple"
               width={158}
               height={48}
             />
-            <img
+            <Image
               className="col-span-2 max-h-12 w-full object-contain sm:col-start-2 lg:col-span-1"
               src="/nyu-logo.png"
               alt="SavvyCal"
               width={158}
               height={48}
             />
-            <img
+            <Image
               className="col-span-2 col-start-2 max-h-24 w-full object-contain sm:col-start-auto lg:col-span-1"
               src="/UniversityofPennsylvania_FullLogo_RGB-4_0.png"
               alt="Statamic"
               width={316}
               height={96}
             />
-
           </div>
         </div>
 
         {/* Feature section */}
-        <div className="mx-auto mt-32 max-w-7xl sm:mt-56 sm:px-6 lg:px-8 mb-16">
+        <div className="mx-auto mb-16 mt-32 max-w-7xl sm:mt-56 sm:px-6 lg:px-8">
           <div className="relative isolate overflow-hidden bg-gray-900 px-6 py-20 sm:rounded-3xl sm:px-10 sm:py-24 lg:py-24 xl:px-24">
             <div className="mx-auto grid max-w-2xl grid-cols-1 gap-x-8 gap-y-16 sm:gap-y-20 lg:mx-0 lg:max-w-none lg:grid-cols-2 lg:items-center lg:gap-y-0">
               <div className="lg:row-start-2 lg:max-w-md">
                 <h2 className="text-3xl font-bold tracking-tight text-white sm:text-4xl">
-                  Why expose your sensitive financial information just to apply for financial aid?
+                  Why expose your sensitive financial information just to apply
+                  for financial aid?
                   <br />
                 </h2>
                 <p className="mt-6 text-lg leading-8 text-gray-300">
-                  Meet ArcAid - the game changer  that keeps your data private while mass applying for financial aid
+                  Meet ArcAid - the game changer that keeps your data private
+                  while mass applying for financial aid
                 </p>
               </div>
-              <img
+              <Image
                 src="https://tailwindui.com/img/component-images/dark-project-app-screenshot.png"
                 alt="Product screenshot"
                 className="relative -z-20 min-w-full max-w-xl rounded-xl shadow-xl ring-1 ring-white/10 lg:row-span-4 lg:w-[64rem] lg:max-w-none"
@@ -483,7 +443,7 @@ export default function LandingPage() {
                           aria-hidden="true"
                         />
                         {feature.name}
-                      </dt>{" "}
+                      </dt>
                       <dd className="inline">{feature.description}</dd>
                     </div>
                   ))}
@@ -506,7 +466,7 @@ export default function LandingPage() {
         </div>
 
         {/* Testimonials section */}
-        <div className="relative isolate mt-32 sm:mt-56 sm:pt-32 mb-16">
+        <div className="relative isolate mb-16 mt-32 sm:mt-56 sm:pt-32">
           <svg
             className="absolute inset-0 -z-10 hidden h-full w-full stroke-gray-200 [mask-image:radial-gradient(64rem_64rem_at_top,white,transparent)] sm:block"
             aria-hidden="true"
@@ -603,7 +563,7 @@ export default function LandingPage() {
                               columnIdx === columnGroup.length - 1)
                             ? "xl:row-span-2"
                             : "xl:row-start-1",
-                          "space-y-8"
+                          "space-y-8",
                         )}
                       >
                         {column.map((testimonial) => (
