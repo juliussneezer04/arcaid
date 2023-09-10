@@ -1,4 +1,4 @@
-// The program input for create_financial_record/src/main.leo
+// The program input for arcaid_create_financial_record/src/main.leo
 [main]
 factor1: u32 = 1u32;
 factor2: u32 = 2u32;

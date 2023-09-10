@@ -1,4 +1,4 @@
-# create_financial_record.aleo
+# arcaid_create_financial_record.aleo
 
 ## Build Guide
 
@@ -11,11 +11,11 @@ snarkvm build
 To execute this Aleo program, run:
 
 ```bash
-snarkvm run hello
+snarkvm run main
 ```
 
 Deployed Transaction ID:
 
 ```bash
-at1xpa0ak537j6c3p9fxhrp2eaymg7lgnzf4s2c2rh77s2ftx7crvgq6427z6
+at1pezkx82duruxz092hqatj2qecx6zxsx40fnak2gd2sq4m8dcfqzq4v5gvn
 ```

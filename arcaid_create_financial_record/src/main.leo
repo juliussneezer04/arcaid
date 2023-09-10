@@ -1,5 +1,5 @@
-// The 'create_financial_record' program.
-program create_financial_record.aleo {
+// The 'arcaid_create_financial_record' program.
+program arcaid_create_financial_record.aleo {
 
   record FinancialRecord {
     owner: address,
