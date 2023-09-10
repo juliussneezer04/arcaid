@@ -122,7 +122,7 @@ export default function DashboardPage() {
         <UserButton afterSignOutUrl="/" />
       </header>
 
-      {isAdmin ? <Requests /> : <Applications />}
+      {!isAdmin ? <Requests /> : <Applications />}
 
       <div className={`fixed inset-0 flex items-center justify-center ${isDialogOpen ? '' : 'hidden'} bg-opacity-50 dark:bg-gray-800`}>
         <div className="bg-white p-10 rounded-lg w-1/3 shadow-lg dark:bg-gray-700">

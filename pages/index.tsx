@@ -425,7 +425,7 @@ export default function LandingPage() {
                 </p>
               </div>
               <Image
-                src="https://tailwindui.com/img/component-images/dark-project-app-screenshot.png"
+                src="/desktop.png"
                 alt="Product screenshot"
                 className="relative -z-20 min-w-full max-w-xl rounded-xl shadow-xl ring-1 ring-white/10 lg:row-span-4 lg:w-[64rem] lg:max-w-none"
                 width={2432}
