@@ -187,7 +187,7 @@ export default function Applications() {
                     setSelectedFile={setFile}
                   />
 
-                  <FormControl fullWidth sx={{ marginTop: 2 }}>
+                  <FormControl required fullWidth sx={{ marginTop: 2 }}>
                     <InputLabel id="demo-simple-select-label">
                       Institution
                     </InputLabel>

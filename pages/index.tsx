@@ -210,14 +210,14 @@ export default function LandingPage() {
             {signedIn ? (
               <Link
                 href="/dashboard"
-                className="text-sm font-semibold leading-6 text-gray-900"
+                className="text-lg font-semibold leading-6 text-gray-900"
               >
                 Dashboard <span aria-hidden="true">&rarr;</span>
               </Link>
             ) : (
               <Link
                 href="/sign-in"
-                className="text-sm font-semibold leading-6 text-gray-900"
+                className="text-lg font-semibold leading-6 text-gray-900"
               >
                 Sign in <span aria-hidden="true">&rarr;</span>
               </Link>
@@ -252,14 +252,14 @@ export default function LandingPage() {
                   {signedIn ? (
                     <Link
                       href="/dashboard"
-                      className="-mx-3 block rounded-lg px-3 py-2.5 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50"
+                      className="mx-5 block rounded-lg px-3 py-3 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50"
                     >
                       Dashboard
                     </Link>
                   ) : (
                     <a
                       href="/sign-in"
-                      className="-mx-3 block rounded-lg px-3 py-2.5 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50"
+                      className="mx-5 block rounded-lg px-3 py-3 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50"
                     >
                       Sign in
                     </a>
