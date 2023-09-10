@@ -1,5 +1,10 @@
 ![arcaid](https://github.com/juliussneezer04/arcaid/assets/95898480/5eec5c86-909d-4858-a030-ad0beee89019)
 
+![Vercel](https://img.shields.io/badge/vercel-%23000000.svg?style=for-the-badge&logo=vercel&logoColor=white) 
+![Postgres](https://img.shields.io/badge/postgres-%23316192.svg?style=for-the-badge&logo=postgresql&logoColor=white)
+![GitHub](https://img.shields.io/badge/github-%23121011.svg?style=for-the-badge&logo=github&logoColor=white)
+
+
 # 🎓 ArcAid: The Faster, More Private Way to Apply for Financial Aid
 
 ## 🌟 Introduction
@@ -29,8 +34,3 @@ Every year, 💰 more than $200 billion in federal student aid is disbursed thro
 ## 🤗 Getting Started
 
 🔗 Visit [our website](https://arcaid.com) to get started on your easier & more private financial aid application journey.
-
-
-![Vercel](https://img.shields.io/badge/vercel-%23000000.svg?style=for-the-badge&logo=vercel&logoColor=white) 
-![Postgres](https://img.shields.io/badge/postgres-%23316192.svg?style=for-the-badge&logo=postgresql&logoColor=white)
-![GitHub](https://img.shields.io/badge/github-%23121011.svg?style=for-the-badge&logo=github&logoColor=white)
