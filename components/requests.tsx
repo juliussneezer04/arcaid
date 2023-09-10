@@ -64,8 +64,15 @@ export default function Requests() {
                     </tr>
                   </thead>
                   <tbody className="bg-white">
-                    {loading ? (
-                      <></>
+                    {requests.length === 0 ? (
+                      <tr>
+                        <td
+                          colSpan={5}
+                          className="px-3 py-4 text-center text-sm text-gray-500"
+                        >
+                          No rows available
+                        </td>
+                      </tr>
                     ) : (
                       requests.map((request) => (
                         <tr key={request.email} className="even:bg-gray-50">
