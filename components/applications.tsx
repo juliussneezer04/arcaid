@@ -17,9 +17,10 @@ import animation_lmd22m25 from "../assets/animation_lmd22m25.json";
 import animation_lmd0dti7 from "../assets/animation_lmd0dti7.json";
 import StyledDropzone from "./dropzone";
 import { Application } from "@/interfaces";
-import { Institution } from "@/config";
+import { Institution, institutionThresholds } from "@/config";
 import { GetServerSideProps } from "next";
 import prisma from "@/lib/db";
+import { handleVerificationOfRecord } from "@/lib/aleo";
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const apps = await prisma.application.findMany();
@@ -105,8 +106,29 @@ export default function Applications({ apps }: { apps?: Application[] }) {
 
   const [checkOpen, setCheckOpen] = useState(false);
 
-  const handleCheck = useCallback(() => {
-    setCheckOpen(true);
+  const handleCheck = useCallback(async (applicationHash: string) => {
+    const institution = Institution.NUS;
+    const [threshold1, threshold2, threshold3] =
+      institutionThresholds[institution];
+
+    const privateKey = process.env.NEXT_PUBLIC_PRIVATE_KEY;
+
+    try {
+      const res = await handleVerificationOfRecord(
+        applicationHash,
+        threshold1,
+        threshold2,
+        threshold3,
+        privateKey || "",
+      );
+      const result = res?.[0] || false;
+      alert(result ? "Verified" : "Not verified");
+      setCheckOpen(result);
+    } catch (e) {
+      console.error(e);
+      alert("User does not meet criteria");
+      return false;
+    }
   }, []);
 
   const handleCheckClose = () => {
@@ -178,7 +200,7 @@ export default function Applications({ apps }: { apps?: Application[] }) {
                     setSelectedFile={setFile}
                   />
 
-                  <FormControl fullWidth sx={{ marginTop: 2 }}>
+                  <FormControl required fullWidth sx={{ marginTop: 2 }}>
                     <InputLabel id="demo-simple-select-label">
                       Institution
                     </InputLabel>
@@ -295,7 +317,9 @@ export default function Applications({ apps }: { apps?: Application[] }) {
                           </td>
                           <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
                             <button
-                              onClick={handleCheck}
+                              onClick={() =>
+                                handleCheck(application.applicationHash)
+                              }
                               className="text-indigo-600 hover:text-indigo-900"
                             >
                               Check Eligibility
