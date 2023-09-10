@@ -91,6 +91,7 @@ export default function Applications({
 
   const handleSubmit = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
+    setWarningModalOpen(false);
     const formData = new FormData();
     formData.append("file", file!);
     formData.append("fileName", file!.name);
@@ -99,7 +100,6 @@ export default function Applications({
         "content-type": "multipart/form-data",
       },
     };
-    // TODO: call blockchain to create record
     setProcessing(true);
 
     const studentIncome = 5000;
@@ -129,7 +129,7 @@ export default function Applications({
       });
       setProcessing(false);
       setFile(undefined);
-    }, 3000);
+    }, 5000);
   };
 
   const handleClose = () => {
@@ -189,6 +189,9 @@ export default function Applications({
             setIsOpen={setWarningModalOpen}
             onClose={handleSubmit}
           />
+          <div className="-mt-6 flex justify-end">
+            <Button onClick={addRecord}>Add Record</Button>
+          </div>
           <Dialog open={open} onClose={handleClose}>
             <DialogTitle>Financial Aid Application</DialogTitle>
             <DialogContent>
@@ -218,6 +221,7 @@ export default function Applications({
                 <Button
                   onClick={() => {
                     setWarningModalOpen(true);
+                    handleClose();
                   }}
                 >
                   Submit
