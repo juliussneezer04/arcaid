@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import Image from "next/image";
 
 type Request = {
   email: string;
@@ -7,15 +8,12 @@ type Request = {
 
 export default function Requests() {
   const [requests, setRequests] = useState<Request[]>([]);
-  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     const getRequests = async () => {
-      setLoading(true);
       const response = await fetch("/api/applications");
       const userRequests: Request[] = await response.json();
       setRequests(userRequests);
-      setLoading(false);
     };
 
     getRequests();
@@ -33,7 +31,7 @@ export default function Requests() {
                 Requests Made
               </h1>
               <p className="mt-2 text-sm text-gray-700">
-                An overview of all the requests made to your school.
+                An overview of all financial applications made to your school.
               </p>
             </div>
           </div>
@@ -70,7 +68,14 @@ export default function Requests() {
                           colSpan={5}
                           className="px-3 py-4 text-center text-sm text-gray-500"
                         >
-                          No rows available
+                          <Image
+                            src="/arcaid_1.png"
+                            width={100}
+                            height={100}
+                            className="col-span-2 max-h-36 w-full object-contain lg:col-span-1"
+                            alt="ArcAid"
+                          />
+                          No applications found
                         </td>
                       </tr>
                     ) : (
