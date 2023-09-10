@@ -21,3 +21,15 @@ function main:
     and r7 r6 into r8;
     output r8 as boolean.private;
 `;
+
+export enum Institution {
+  UPenn = "University of Pennsylvania",
+  BU = "Boston University",
+  NUS = "National University of Singapore",
+}
+
+export const institutionThresholds = {
+  [Institution.UPenn]: [10000, 10000, 10000],
+  [Institution.BU]: [8000, 9500, 10000],
+  [Institution.NUS]: [3000, 3000, 3000],
+};

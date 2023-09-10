@@ -17,37 +17,34 @@ import animation_lmd22m25 from "../assets/animation_lmd22m25.json";
 import animation_lmd0dti7 from "../assets/animation_lmd0dti7.json";
 import StyledDropzone from "./dropzone";
 import { Application } from "@/interfaces";
+import { Institution } from "@/config";
+import { GetServerSideProps } from "next";
+import prisma from "@/lib/db";
 
-const INSTITUTIONS = [
-  "University of Pennsylvania",
-  "Boston University",
-  "National University of Singapore",
-];
+export const getServerSideProps: GetServerSideProps = async (context) => {
+  const apps = await prisma.application.findMany();
 
-export default function Applications() {
-  const [applications, setApplications] = useState<Application[]>([]);
+  return {
+    props: {
+      apps,
+    },
+  };
+};
+
+export default function Applications({ apps }: { apps?: Application[] }) {
+  const [applications, setApplications] = useState<Application[]>(
+    apps?.map((application) => ({
+      studentIncome: "XXX",
+      householdIncome: "XXX",
+      expectedFamilyContribution: "XXX",
+      institution: application.institution,
+      applicationHash: application.applicationHash,
+    })) || [],
+  );
   const [institution, setInstitution] = useState("");
   const [open, setOpen] = useState(false);
   const [file, setFile] = useState<File | null>(null);
   const [processing, setProcessing] = useState(false);
-
-  useEffect(() => {
-    const getApplications = async () => {
-      const response = await fetch("/api/applications");
-      let userApplications: Application[] = await response.json();
-
-      userApplications = userApplications.map((application) => ({
-        studentIncome: "XXX",
-        householdIncome: "XXX",
-        expectedFamilyContribution: "XXX",
-        institution: application.institution,
-        applicationHash: application.applicationHash,
-      }));
-      setApplications(userApplications);
-    };
-
-    getApplications();
-  }, []);
 
   const openApplicationDialogue = () => {
     setOpen(true);
@@ -69,10 +66,11 @@ export default function Applications() {
 
     const newApplication: Application = {
       studentIncome: "5000",
-      householdIncome: "50000",
-      expectedFamilyContribution: "5000",
+      householdIncome: "500",
+      expectedFamilyContribution: "500",
       institution: institution,
-      applicationHash: "0x123456789",
+      applicationHash:
+        "{ owner: aleo164t4l4xvs0g0lf592exekxdfet5tv8q3dfd68arp77yrm8srnsys48vsj9.private, microcredits: 0u64.private, factor1: 500u32.private, factor2: 500u32.private, factor3: 50u32.private, _nonce: 2556023670012556610248357751778470505697587013303070071658643471341827061153group.public }",
     };
 
     setTimeout(async () => {
@@ -191,7 +189,7 @@ export default function Applications() {
                       label="institution"
                       onChange={handleInstitutionChange}
                     >
-                      {INSTITUTIONS.map((school, i) => (
+                      {Object.values(Institution).map((school, i) => (
                         <MenuItem key={i} value={school}>
                           {school}
                         </MenuItem>

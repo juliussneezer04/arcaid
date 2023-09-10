@@ -1,16 +1,21 @@
 import { ARCAID_VERIFY_FINANCIAL_RECORD_CODE } from "@/config";
-import { Application } from "@/interfaces";
 import { initializeWasm, Account, ProgramManager } from "@aleohq/sdk";
+import dotenv from "dotenv";
+
+dotenv.config();
 
 export async function handleVerificationOfRecord(
-  application: Application,
+  applicationHash: string,
   factor1Threshold: number,
   factor2Threshold: number,
   factor3Threshold: number,
+  privateKey: string,
 ) {
   await initializeWasm();
 
-  const privateKey = process.env.PRIVATE_KEY;
+  console.log("Network", process.env.DATABASE_URL);
+
+  console.log("pkey", privateKey);
   const account = new Account({
     privateKey: privateKey,
   });
@@ -25,7 +30,7 @@ export async function handleVerificationOfRecord(
     ARCAID_VERIFY_FINANCIAL_RECORD_CODE,
     "main",
     [
-      application.applicationHash,
+      applicationHash,
       `${factor1Threshold}u32`,
       `${factor2Threshold}u32`,
       `${factor3Threshold}u32`,
