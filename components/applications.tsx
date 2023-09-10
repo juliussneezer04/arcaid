@@ -10,10 +10,12 @@ import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
-import ClipLoader from "react-spinners/ClipLoader";
 import Lottie from "lottie-react";
 
+import animation_lmd22m25 from "../assets/animation_lmd22m25.json"
 import animation_lmd0dti7 from "../assets/animation_lmd0dti7.json";
+import StyledDropzone from "./dropzone";
+
 
 type Application = {
   studentIncome: string;
@@ -33,7 +35,7 @@ export default function Applications() {
   const [applications, setApplications] = useState<Application[]>([]);
   const [institution, setInstitution] = useState("");
   const [open, setOpen] = useState(false);
-  const [file, setFile] = useState<File>();
+  const [file, setFile] = useState<File | null>(null);
   const [processing, setProcessing] = useState(false);
   const [loading, setLoading] = useState(false);
 
@@ -99,7 +101,7 @@ export default function Applications() {
 
   const handleClose = () => {
     setOpen(false);
-    setFile(undefined);
+    setFile(null);
     setInstitution("");
   };
 
@@ -125,13 +127,15 @@ export default function Applications() {
 
   return (
     <main>
-      <Dialog open={checkOpen} onClose={handleCheckClose}>
-        <DialogTitle>Check Verification</DialogTitle>
+      <Dialog open={checkOpen} onClose={handleCheckClose} maxWidth={'sm'} fullWidth>
+        <DialogTitle>Check Eligibility</DialogTitle>
         <DialogContent>
           <Box maxWidth={"100px"}>
             <Lottie animationData={animation_lmd0dti7} loop={false} />
           </Box>
-          <DialogContentText>Verified</DialogContentText>
+          <DialogContentText>
+            Eligible
+          </DialogContentText>
         </DialogContent>
         <DialogActions>
           <Button onClick={handleCheckClose}>Close</Button>
@@ -164,52 +168,65 @@ export default function Applications() {
             <DialogTitle>Financial Aid Application</DialogTitle>
             <DialogContent>
               <DialogContentText>
-                Upload your financial document.
+                {processing ? ("Loading...") : ("Upload your financial document")}
               </DialogContentText>
+              {processing ? (
+                <Box
+                  display="flex"
+                  justifyContent="center"
+                  alignItems="center"
+                  width="100%"
+                  height="100%"
+                >
+                  <Lottie
+                    animationData={animation_lmd22m25}
+                    loop={true}
+                  />
+                </Box>
+              ) : (
+                <>
+                  <StyledDropzone selectedFile={file} setSelectedFile={setFile} />
+
+                  <FormControl fullWidth sx={{ marginTop: 2 }}>
+                    <InputLabel id="demo-simple-select-label">
+                      Institution
+                    </InputLabel>
+                    <Select
+                      labelId="demo-simple-select-label"
+                      id="demo-simple-select"
+                      value={institution}
+                      label="institution"
+                      onChange={handleInstitutionChange}
+                    >
+                      {INSTITUTIONS.map((school, i) => (
+                        <MenuItem key={i} value={school}>
+                          {school}
+                        </MenuItem>
+                      ))}
+                    </Select>
+                  </FormControl>
+                </>
+
+              )}
             </DialogContent>
 
-            {file ? (
-              <DialogContent className="flex-col items-center justify-center">
-                {processing ? (
-                  <ClipLoader loading={processing} />
-                ) : (
-                  <>
-                    <DialogContentText>{file.name}</DialogContentText>
-                    <FormControl fullWidth sx={{ marginTop: 2 }}>
-                      <InputLabel id="demo-simple-select-label">
-                        Institution
-                      </InputLabel>
-                      <Select
-                        labelId="demo-simple-select-label"
-                        id="demo-simple-select"
-                        value={institution}
-                        label="institution"
-                        onChange={handleInstitutionChange}
-                      >
-                        {INSTITUTIONS.map((school, i) => (
-                          <MenuItem key={i} value={school}>
-                            {school}
-                          </MenuItem>
-                        ))}
-                      </Select>
-                    </FormControl>
-                  </>
+            {!processing && (
+              <DialogActions>
+                <button
+                  className="border border-blue-500 text-blue-500 hover:border-blue-700 hover:text-blue-700 font-bold py-2 px-4 rounded-full mr-2 shadow-sm dark:border-blue-400 dark:text-blue-400 dark:hover:border-blue-300 dark:hover:text-blue-300"
+                  onClick={handleClose}>
+                  Cancel
+                </button>
+                {file && institution && (
+                  <button
+                    className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full shadow-sm dark:bg-blue-400 dark:hover:bg-blue-300"
+                    onClick={handleSubmit}>
+                    Submit
+                  </button>
                 )}
-              </DialogContent>
-            ) : (
-              <Button component="label">
-                Upload
-                <input type="file" hidden onChange={handleFileUpload} />
-              </Button>
+              </DialogActions>
             )}
-
-            <DialogActions>
-              <Button onClick={handleClose}>Cancel</Button>
-              {file && institution && (
-                <Button onClick={handleSubmit}>Submit</Button>
-              )}
-            </DialogActions>
-          </Dialog>
+          </Dialog >
 
           <div className="mt-8 flow-root">
             <div className="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
@@ -252,11 +269,14 @@ export default function Applications() {
                   <tbody className="bg-white">
                     {applications.length === 0 ? (
                       <tr>
-                        <td
-                          colSpan={5}
-                          className="px-3 py-4 text-center text-sm text-gray-500"
-                        >
-                          No rows available
+                        <td colSpan={5} className="px-3 py-4 text-center text-sm text-gray-500">
+                          <img
+                            className="col-span-2 max-h-36 w-full object-contain lg:col-span-1"
+                            src="/arcaid (1).png"
+                            width={100}
+                            height={100}
+                          />
+                          No records found
                         </td>
                       </tr>
                     ) : (
@@ -287,14 +307,15 @@ export default function Applications() {
                           </td>
                         </tr>
                       ))
-                    )}
-                  </tbody>
-                </table>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </main>
+                    )
+                    }
+                  </tbody >
+                </table >
+              </div >
+            </div >
+          </div >
+        </div >
+      </div >
+    </main >
   );
 }

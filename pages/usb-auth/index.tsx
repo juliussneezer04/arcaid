@@ -1,13 +1,29 @@
 import { useRouter } from 'next/router';
-import React, { useState, ChangeEvent } from 'react';
+import React, { useState, ChangeEvent, useEffect } from 'react';
 
 import animation_lmcw3nkq from "../../assets/animation_lmcw3nkq.json";
 import Lottie from "lottie-react";
+import StyledDropzone from '@/components/dropzone';
 
 export default function Page() {
   const [fileUploaded, setFileUploaded] = useState<boolean>(false);
   const [code, setCode] = useState<string[]>(Array(6).fill(''));
+  const [file, setFile] = useState<File | null>(null);
   const [fileText, setFileText] = useState<string>('');
+
+  useEffect(() => {
+    if (file && file.type === 'text/plain') {
+      const reader = new FileReader();
+      reader.onload = (event) => {
+        const text = event.target?.result as string;
+        setFileText(text);
+        console.log(text);
+      };
+      reader.readAsText(file);
+
+      setFileUploaded(true);
+    }
+  }, [file])
 
   const [toast, setToast] = useState<{ visible: boolean; message: string; type: 'success' | 'error' }>({ visible: false, message: '', type: 'success' });
 
@@ -83,22 +99,6 @@ export default function Page() {
     }
   };
 
-  const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (file && file.type === 'text/plain') {
-      const reader = new FileReader();
-      reader.onload = (event) => {
-        const text = event.target?.result as string;
-        setFileText(text);
-        console.log(text);
-      };
-      reader.readAsText(file);
-
-      setFileUploaded(true);
-    }
-  };
-
-
   return (
     <div className="h-screen bg-gray-100 flex justify-center items-center">
       {toast.visible && (
@@ -121,7 +121,7 @@ export default function Page() {
                   <label htmlFor="fileInput" className="block text-sm font-medium text-gray-700">
                     Upload your _file.txt
                   </label>
-                  <input type="file" id="fileInput" accept=".txt" onChange={handleFileChange} className="mt-2 w-full" />
+                  <StyledDropzone selectedFile={file} setSelectedFile={setFile} />
                 </div>
               )}
 
