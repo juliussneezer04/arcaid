@@ -11,16 +11,19 @@ import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
+import animation_lmd0dti7 from "../assets/animation_lmd0dti7.json";
 import Lottie from "lottie-react";
 
 import animation_lmd22m25 from "../assets/animation_lmd22m25.json";
-import animation_lmd0dti7 from "../assets/animation_lmd0dti7.json";
 import StyledDropzone from "./dropzone";
+import { ARCAID_CREATE_FINANCIAL_RECORD_CODE } from "@/config";
+import { cn } from "@/lib/utils";
+import { Account, ProgramManager } from "@aleohq/sdk";
 
 type Application = {
-  studentIncome: string;
-  householdIncome: string;
-  expectedFamilyContribution: string;
+  studentIncome: string | number;
+  householdIncome: string | number;
+  expectedFamilyContribution: string | number;
   institution: string;
   applicationHash: string;
 };
@@ -60,7 +63,37 @@ export default function Applications() {
     setOpen(true);
   };
 
-  const handleSubmit = (e: React.MouseEvent<HTMLButtonElement>) => {
+  const executeCreation = useCallback(
+    async (factor1: number, factor2: number, factor3: number) => {
+      const programManager = new ProgramManager(
+        undefined,
+        undefined,
+        undefined,
+      );
+
+      // Create a temporary account for the execution of the program
+      // TODO Use a fixed account.
+      const account = new Account();
+      programManager.setAccount(account);
+
+      // Get the response and ensure that the program executed correctly
+      // WARNING - This function takes a long time on first run
+      const executionResponse = await programManager.executeOffline(
+        ARCAID_CREATE_FINANCIAL_RECORD_CODE,
+        "main",
+        [factor1.toString(), factor2.toString(), factor3.toString()].map(
+          (x) => `${x}u32`,
+        ),
+        false,
+      );
+      const result = executionResponse.getOutputs();
+      alert(`Converted to a Secure Record`);
+      return result?.[0] || "";
+    },
+    [],
+  );
+
+  const handleSubmit = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     const formData = new FormData();
     formData.append("file", file!);
@@ -70,30 +103,30 @@ export default function Applications() {
         "content-type": "multipart/form-data",
       },
     };
-    // TODO: call blockchain to create record
+    const studentIncome = 5000;
+    const householdIncome = 50000;
+    const expectedFamilyContribution = 5000;
+
     setProcessing(true);
-    // TODO: call blockchain to get applicationHash
-
-    const newApplication: Application = {
-      studentIncome: "5000",
-      householdIncome: "50000",
-      expectedFamilyContribution: "5000",
-      institution: institution,
-      applicationHash: "0x123456789",
-    };
-
-    setTimeout(async () => {
-      await fetch("/api/applications", {
-        method: "POST",
-        body: JSON.stringify({
-          applicationHash: newApplication.applicationHash,
-          institution: newApplication.institution,
-        }),
-      });
-      setApplications([...applications, newApplication]);
-      setProcessing(false);
+    const hashValue = await executeCreation(
+      studentIncome,
+      householdIncome,
+      expectedFamilyContribution,
+    );
+    setTimeout(() => {
       handleClose();
-    }, 5000);
+      setApplications([
+        {
+          studentIncome,
+          householdIncome,
+          expectedFamilyContribution,
+          applicationHash: hashValue,
+          institution,
+        },
+      ]);
+      setProcessing(false);
+      setFile(null);
+    }, 8000);
   };
 
   const handleClose = () => {
@@ -130,7 +163,7 @@ export default function Applications() {
         maxWidth={"sm"}
         fullWidth
       >
-        <DialogTitle>Check Eligibility</DialogTitle>
+        <DialogTitle>Check Verification</DialogTitle>
         <DialogContent>
           <Box maxWidth={"100px"}>
             <Lottie animationData={animation_lmd0dti7} loop={false} />
@@ -157,9 +190,12 @@ export default function Applications() {
               <button
                 type="button"
                 onClick={openApplicationDialogue}
-                className="block rounded-md bg-indigo-600 px-3 py-2 text-center text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                className={cn(
+                  processing ? "animate-pulse" : "",
+                  "block rounded-md bg-indigo-600 px-3 py-2 text-center text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600",
+                )}
               >
-                Create Application
+                {!processing ? "Create Application" : "Loading..."}
               </button>
             </div>
           </div>
