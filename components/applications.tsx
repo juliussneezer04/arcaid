@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 import Button from "@mui/material/Button";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
@@ -8,17 +8,34 @@ import DialogTitle from "@mui/material/DialogTitle";
 import ClipLoader from "react-spinners/ClipLoader";
 
 type Application = {
-  studentIncome: number;
-  householdIncome: number;
-  expectedFamilyContribution: number;
+  studentIncome: string;
+  householdIncome: string;
+  expectedFamilyContribution: string;
   applicationHash: string;
 };
 
 export default function Applications() {
-  const [records, setRecords] = useState<Application[]>([]);
+  const [applications, setApplications] = useState<Application[]>([]);
   const [open, setOpen] = useState(false);
   const [file, setFile] = useState<File>();
   const [processing, setProcessing] = useState(false);
+
+  useEffect(() => {
+    const getApplications = async () => {
+      const response = await fetch("/api/applications");
+      let userApplications: Application[] = await response.json();
+
+      userApplications = userApplications.map((application) => ({
+        studentIncome: "XXX",
+        householdIncome: "XXX",
+        expectedFamilyContribution: "XXX",
+        applicationHash: application.applicationHash,
+      }));
+      setApplications(userApplications);
+    };
+
+    getApplications();
+  }, []);
 
   const addRecord = () => {
     setOpen(true);
@@ -34,21 +51,30 @@ export default function Applications() {
         "content-type": "multipart/form-data",
       },
     };
-    // TODO: call blockchain to create record
+
     setProcessing(true);
-    setTimeout(() => {
+    const newApplication: Application = {
+      studentIncome: "5000",
+      householdIncome: "50000",
+      expectedFamilyContribution: "5000",
+      applicationHash: "0x123456789",
+    };
+
+    setTimeout(async () => {
       handleClose();
-      setRecords([
-        {
-          studentIncome: 5000,
-          householdIncome: 50000,
-          expectedFamilyContribution: 5000,
-          applicationHash: "0x123456789",
-        },
-      ]);
+
+      // TODO: call blockchain to create record
+
+      setApplications([...applications, newApplication]);
+      await fetch("/api/applications", {
+        method: "POST",
+        body: JSON.stringify({
+          applicationHash: newApplication.applicationHash,
+        }),
+      });
       setProcessing(false);
       setFile(undefined);
-    }, 10000);
+    }, 5000);
   };
 
   const handleClose = () => {
@@ -114,7 +140,7 @@ export default function Applications() {
             </DialogActions>
           </Dialog>
 
-          {records.length > 0 && (
+          {applications.length > 0 && (
             <div className="mt-8 flow-root">
               <div className="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
                 <div className="inline-block min-w-full py-2 align-middle sm:px-6 lg:px-8">
@@ -148,9 +174,9 @@ export default function Applications() {
                       </tr>
                     </thead>
                     <tbody className="bg-white">
-                      {records.map((record, index) => (
+                      {applications.map((record, index) => (
                         <tr key={index}>
-                          <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-3">
+                          <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-500 sm:pl-3">
                             {record.studentIncome}
                           </td>
                           <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">

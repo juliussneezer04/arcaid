@@ -1,14 +1,23 @@
 import { UserButton } from "@clerk/nextjs";
-import { useOrganizationList, useOrganization } from "@clerk/nextjs";
+import { useOrganizationList } from "@clerk/nextjs";
 
 import Applications from "@/components/applications";
 import Requests from "@/components/requests";
-import { ADMIN_ORG_ID } from "@/utils/constants";
+import { ADMIN_ORG_ID } from "@/lib/constants";
 
 export default function DashboardPage() {
-  const { organizationList, isLoaded } = useOrganizationList();
-  const isAdmin = organizationList?.find(
-    ({ organization }) => organization.id === ADMIN_ORG_ID
+  const { userMemberships, isLoaded } = useOrganizationList({
+    userMemberships: {
+      infinite: true,
+    },
+  });
+
+  if (!isLoaded) {
+    return <>Loading</>;
+  }
+
+  const isAdmin = userMemberships?.data?.find(
+    (mem) => mem.organization.id === ADMIN_ORG_ID
   );
 
   return (
