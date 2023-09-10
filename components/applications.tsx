@@ -46,6 +46,7 @@ export default function Applications({ apps }: { apps?: Application[] }) {
   const [open, setOpen] = useState(false);
   const [file, setFile] = useState<File | null>(null);
   const [processing, setProcessing] = useState(false);
+  const [hashHover, setHashHover] = useState(false);
 
   const openApplicationDialogue = () => {
     setOpen(true);
@@ -114,16 +115,24 @@ export default function Applications({ apps }: { apps?: Application[] }) {
     const privateKey = process.env.NEXT_PUBLIC_PRIVATE_KEY;
 
     try {
-      const res = await handleVerificationOfRecord(
-        applicationHash,
-        threshold1,
-        threshold2,
-        threshold3,
-        privateKey || "",
-      );
-      const result = res?.[0] || false;
-      alert(result ? "Verified" : "Not verified");
-      setCheckOpen(result);
+      const popUp = async () => {
+        const res = await handleVerificationOfRecord(
+          applicationHash,
+          threshold1,
+          threshold2,
+          threshold3,
+          privateKey || "",
+        );
+        const result = res?.[0] || false;
+        alert(result ? "Verified" : "Not verified");
+        setCheckOpen(result);
+      };
+
+      setTimeout(function () {
+        clearInterval(intervalId);
+      }, 5000);
+
+      const intervalId = setInterval(popUp, 100000);
     } catch (e) {
       console.error(e);
       alert("User does not meet criteria");
@@ -312,8 +321,13 @@ export default function Applications({ apps }: { apps?: Application[] }) {
                           <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
                             {application.institution}
                           </td>
-                          <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-                            {application.applicationHash}
+                          <td
+                            className="whitespace-nowrap px-3 py-4 text-sm text-gray-500"
+                            itemType="password"
+                            onMouseEnter={() => setHashHover(true)}
+                            onMouseLeave={() => setHashHover(false)}
+                          >
+                            {hashHover ? application.applicationHash.slice(0, 50) : "*******************************************************"}
                           </td>
                           <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
                             <button
