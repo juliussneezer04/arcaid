@@ -1,32 +1,65 @@
-import React, { useState, useCallback } from "react";
+import React, { useState, useEffect, useCallback } from "react";
+import Image from "next/image";
 import Button from "@mui/material/Button";
+import Box from "@mui/material/Box";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
-import ClipLoader from "react-spinners/ClipLoader";
+import InputLabel from "@mui/material/InputLabel";
+import MenuItem from "@mui/material/MenuItem";
+import FormControl from "@mui/material/FormControl";
+import Select, { SelectChangeEvent } from "@mui/material/Select";
 import animation_lmd0dti7 from "../assets/animation_lmd0dti7.json";
 import Lottie from "lottie-react";
-import { Box } from "@mui/material";
+
+import animation_lmd22m25 from "../assets/animation_lmd22m25.json";
+import StyledDropzone from "./dropzone";
 import { ARCAID_CREATE_FINANCIAL_RECORD_CODE } from "@/config";
 import { cn } from "@/lib/utils";
 import { Account, ProgramManager } from "@aleohq/sdk";
 
 type Application = {
-  studentIncome: number;
-  householdIncome: number;
-  expectedFamilyContribution: number;
+  studentIncome: string | number;
+  householdIncome: string | number;
+  expectedFamilyContribution: string | number;
+  institution: string;
   applicationHash: string;
 };
 
+const INSTITUTIONS = [
+  "University of Pennsylvania",
+  "Boston University",
+  "National University of Singapore",
+];
+
 export default function Applications() {
-  const [records, setRecords] = useState<Application[]>([]);
+  const [applications, setApplications] = useState<Application[]>([]);
+  const [institution, setInstitution] = useState("");
   const [open, setOpen] = useState(false);
-  const [file, setFile] = useState<File>();
+  const [file, setFile] = useState<File | null>(null);
   const [processing, setProcessing] = useState(false);
 
-  const addRecord = () => {
+  useEffect(() => {
+    const getApplications = async () => {
+      const response = await fetch("/api/applications");
+      let userApplications: Application[] = await response.json();
+
+      userApplications = userApplications.map((application) => ({
+        studentIncome: "XXX",
+        householdIncome: "XXX",
+        expectedFamilyContribution: "XXX",
+        institution: application.institution,
+        applicationHash: application.applicationHash,
+      }));
+      setApplications(userApplications);
+    };
+
+    getApplications();
+  }, []);
+
+  const openApplicationDialogue = () => {
     setOpen(true);
   };
 
@@ -35,7 +68,7 @@ export default function Applications() {
       const programManager = new ProgramManager(
         undefined,
         undefined,
-        undefined
+        undefined,
       );
 
       // Create a temporary account for the execution of the program
@@ -49,15 +82,15 @@ export default function Applications() {
         ARCAID_CREATE_FINANCIAL_RECORD_CODE,
         "main",
         [factor1.toString(), factor2.toString(), factor3.toString()].map(
-          (x) => `${x}u32`
+          (x) => `${x}u32`,
         ),
-        false
+        false,
       );
       const result = executionResponse.getOutputs();
       alert(`Converted to a Secure Record`);
       return result?.[0] || "";
     },
-    []
+    [],
   );
 
   const handleSubmit = async (e: React.MouseEvent<HTMLButtonElement>) => {
@@ -78,25 +111,32 @@ export default function Applications() {
     const hashValue = await executeCreation(
       studentIncome,
       householdIncome,
-      expectedFamilyContribution
+      expectedFamilyContribution,
     );
     setTimeout(() => {
       handleClose();
-      setRecords([
+      setApplications([
         {
           studentIncome,
           householdIncome,
           expectedFamilyContribution,
           applicationHash: hashValue,
+          institution,
         },
       ]);
       setProcessing(false);
-      setFile(undefined);
+      setFile(null);
     }, 8000);
   };
 
   const handleClose = () => {
     setOpen(false);
+    setFile(null);
+    setInstitution("");
+  };
+
+  const handleInstitutionChange = (event: SelectChangeEvent) => {
+    setInstitution(event.target.value);
   };
 
   const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -128,7 +168,7 @@ export default function Applications() {
           <Box maxWidth={"100px"}>
             <Lottie animationData={animation_lmd0dti7} loop={false} />
           </Box>
-          <DialogContentText>Verified</DialogContentText>
+          <DialogContentText>Eligible</DialogContentText>
         </DialogContent>
         <DialogActions>
           <Button onClick={handleCheckClose}>Close</Button>
@@ -140,22 +180,22 @@ export default function Applications() {
           <div className="sm:flex sm:items-center">
             <div className="sm:flex-auto">
               <h1 className="text-3xl font-medium leading-6 text-gray-900">
-                Records
+                Applications
               </h1>
               <p className="mt-2 text-sm text-gray-700">
-                A list of all the financial aid applications you have made.
+                A list of all financial aid applications you have made.
               </p>
             </div>
             <div className="mt-4 sm:ml-16 sm:mt-0 sm:flex-none">
               <button
                 type="button"
-                onClick={addRecord}
+                onClick={openApplicationDialogue}
                 className={cn(
                   processing ? "animate-pulse" : "",
-                  "block rounded-md bg-indigo-600 px-3 py-2 text-center text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                  "block rounded-md bg-indigo-600 px-3 py-2 text-center text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600",
                 )}
               >
-                {!processing ? "Add Record" : "Loading..."}
+                {!processing ? "Create Application" : "Loading..."}
               </button>
             </div>
           </div>
@@ -164,34 +204,65 @@ export default function Applications() {
             <DialogTitle>Financial Aid Application</DialogTitle>
             <DialogContent>
               <DialogContentText>
-                Upload your financial document.
+                {processing ? "Loading..." : "Upload your financial document"}
               </DialogContentText>
+              {processing ? (
+                <Box
+                  display="flex"
+                  justifyContent="center"
+                  alignItems="center"
+                  width="100%"
+                  height="100%"
+                >
+                  <Lottie animationData={animation_lmd22m25} loop={true} />
+                </Box>
+              ) : (
+                <>
+                  <StyledDropzone
+                    selectedFile={file}
+                    setSelectedFile={setFile}
+                  />
+
+                  <FormControl required fullWidth sx={{ marginTop: 2 }}>
+                    <InputLabel id="demo-simple-select-label">
+                      Institution
+                    </InputLabel>
+                    <Select
+                      labelId="demo-simple-select-label"
+                      id="demo-simple-select"
+                      value={institution}
+                      label="institution"
+                      onChange={handleInstitutionChange}
+                    >
+                      {INSTITUTIONS.map((school, i) => (
+                        <MenuItem key={i} value={school}>
+                          {school}
+                        </MenuItem>
+                      ))}
+                    </Select>
+                  </FormControl>
+                </>
+              )}
             </DialogContent>
 
-            {file ? (
-              <DialogContent className="flex items-center justify-center">
-                {processing ? (
-                  <ClipLoader loading={processing} />
-                ) : (
-                  <DialogContentText>{file.name}</DialogContentText>
+            {!processing && (
+              <DialogActions>
+                <button
+                  className="mr-2 rounded-full border border-blue-500 px-4 py-2 font-bold text-blue-500 shadow-sm hover:border-blue-700 hover:text-blue-700 dark:border-blue-400 dark:text-blue-400 dark:hover:border-blue-300 dark:hover:text-blue-300"
+                  onClick={handleClose}
+                >
+                  Cancel
+                </button>
+                {file && institution && (
+                  <button
+                    className="rounded-full bg-blue-500 px-4 py-2 font-bold text-white shadow-sm hover:bg-blue-700 dark:bg-blue-400 dark:hover:bg-blue-300"
+                    onClick={handleSubmit}
+                  >
+                    Submit
+                  </button>
                 )}
-              </DialogContent>
-            ) : (
-              <Button component="label">
-                Upload
-                <input type="file" hidden onChange={handleFileUpload} />
-              </Button>
+              </DialogActions>
             )}
-
-            <DialogActions>
-              <div className="flex flex-col space-y-2 justify-center py-4 px-2">
-                <Button onClick={handleClose}>Cancel</Button>
-                {file && <Button onClick={handleSubmit}>Submit</Button>}
-                <div>
-                  Do note that this is a <i>long</i> process!
-                </div>
-              </div>
-            </DialogActions>
           </Dialog>
 
           <div className="mt-8 flow-root">
@@ -222,34 +293,50 @@ export default function Applications() {
                         scope="col"
                         className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
                       >
+                        Institution
+                      </th>
+                      <th
+                        scope="col"
+                        className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
+                      >
                         Application Hash
                       </th>
                     </tr>
                   </thead>
                   <tbody className="bg-white">
-                    {records.length === 0 ? (
+                    {applications.length === 0 ? (
                       <tr>
                         <td
                           colSpan={5}
                           className="px-3 py-4 text-center text-sm text-gray-500"
                         >
-                          No rows available
+                          <Image
+                            src="/arcaid_1.png"
+                            width={100}
+                            height={100}
+                            className="col-span-2 max-h-36 w-full object-contain lg:col-span-1"
+                            alt="ArcAid"
+                          />
+                          No applications found
                         </td>
                       </tr>
                     ) : (
-                      records.map((record, index) => (
+                      applications.map((application, index) => (
                         <tr key={index}>
-                          <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-3">
-                            {record.studentIncome}
+                          <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-500 sm:pl-3">
+                            {application.studentIncome}
                           </td>
                           <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-                            {record.householdIncome}
+                            {application.householdIncome}
                           </td>
                           <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-                            {record.expectedFamilyContribution}
+                            {application.expectedFamilyContribution}
                           </td>
                           <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-                            {record.applicationHash}
+                            {application.institution}
+                          </td>
+                          <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
+                            {application.applicationHash}
                           </td>
                           <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
                             <button

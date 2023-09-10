@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import Image from "next/image";
 
 type Request = {
   email: string;
@@ -30,7 +31,7 @@ export default function Requests() {
                 Requests Made
               </h1>
               <p className="mt-2 text-sm text-gray-700">
-                An overview of all the requests made to your school.
+                An overview of all financial applications made to your school.
               </p>
             </div>
           </div>
@@ -61,25 +62,43 @@ export default function Requests() {
                     </tr>
                   </thead>
                   <tbody className="bg-white">
-                    {requests.map((request) => (
-                      <tr key={request.email} className="even:bg-gray-50">
-                        <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-3">
-                          {request.email}
-                        </td>
-                        <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-                          {request.applicationHash}
-                        </td>
-                        <td className="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-3">
-                          <button
-                            onClick={handleVerify}
-                            className="text-indigo-600 hover:text-indigo-900"
-                          >
-                            Verify
-                            <span className="sr-only">,</span>
-                          </button>
+                    {requests.length === 0 ? (
+                      <tr>
+                        <td
+                          colSpan={5}
+                          className="px-3 py-4 text-center text-sm text-gray-500"
+                        >
+                          <Image
+                            src="/arcaid_1.png"
+                            width={100}
+                            height={100}
+                            className="col-span-2 max-h-36 w-full object-contain lg:col-span-1"
+                            alt="ArcAid"
+                          />
+                          No applications found
                         </td>
                       </tr>
-                    ))}
+                    ) : (
+                      requests.map((request) => (
+                        <tr key={request.email} className="even:bg-gray-50">
+                          <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-3">
+                            {request.email}
+                          </td>
+                          <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
+                            {request.applicationHash}
+                          </td>
+                          <td className="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-3">
+                            <button
+                              onClick={handleVerify}
+                              className="text-indigo-600 hover:text-indigo-900"
+                            >
+                              Verify
+                              <span className="sr-only">,</span>
+                            </button>
+                          </td>
+                        </tr>
+                      ))
+                    )}
                   </tbody>
                 </table>
               </div>
