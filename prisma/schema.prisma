@@ -6,12 +6,13 @@ generator client {
 }
 
 datasource db {
-  provider = "mysql"
-  url      = env("DATABASE_URL")
+  provider     = "mysql"
+  url          = env("DATABASE_URL")
   relationMode = "prisma"
 }
 
 model Application {
   email           String @id @unique
   applicationHash String @unique
+  institution     String
 }
