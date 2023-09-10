@@ -316,7 +316,8 @@ export default function LandingPage() {
                 ArcAid
               </h1>
               <p className="mx-auto mt-6 text-lg leading-8 text-gray-600">
-                Apply for Financial Aid: The Faster, More Private Way
+                Apply for Financial Aid: The 100% Private Tool that gets you to
+                Aid the Fastest
               </p>
               <div className="mt-10 flex items-center justify-center gap-x-6">
                 <a
@@ -360,10 +361,7 @@ export default function LandingPage() {
                   transform="translate(24 24)"
                   clipPath="url(#2ade4387-9c63-4fc4-b754-10e687a0d332)"
                 >
-                  <img
-                    src="https://tailwindui.com/img/component-images/mobile-app-screenshot.png"
-                    alt=""
-                  />
+                  <img src="/mobile_arcaid.gif" alt="" />
                 </foreignObject>
               </svg>
             </div>
