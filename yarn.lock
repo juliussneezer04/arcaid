@@ -28,6 +28,27 @@
   resolved "https://registry.yarnpkg.com/@aleohq/wasm/-/wasm-0.5.9.tgz#f8e8e76b5cd314fec2ae97b37bef24500aeb1e38"
   integrity sha512-RHffnc+EKCVNLHHNlylJxM5uXzvKToMjz5sNun6MbynU8d9zGoNizD3C5Dieg1VEfhPYQSocPwdUb2DCQPnMxA==
 
+"@aleohq/nodejs@0.5.9":
+  version "0.5.9"
+  resolved "https://registry.yarnpkg.com/@aleohq/nodejs/-/nodejs-0.5.9.tgz#ff98468b6096b592713b9fd7d4bd8f80d9e5f6db"
+  integrity sha512-qw5KbSSnT7VnlNbp8uRPc2PVj7VVjzytxvcNBDRxJVDX3YxvDA1r03CfzmkilZjynBUFA+WtU3o9+/b2V5ANfw==
+
+"@aleohq/sdk@^0.5.10":
+  version "0.5.10"
+  resolved "https://registry.yarnpkg.com/@aleohq/sdk/-/sdk-0.5.10.tgz#95e9f7ca337b7227cd91be68b5c7f41b30b2f376"
+  integrity sha512-kyYC7muysi/f4AXEgNkAV1muP0Z75RrtELhJKATOlzJOThI/yCEyW/16xgGIaKq2azQoTXJxWSeCb1gfD+/JaA==
+  dependencies:
+    "@aleohq/nodejs" "0.5.9"
+    "@aleohq/wasm" "0.5.9"
+    axios "^1.1.3"
+    jsdoc "^3.6.11"
+    unfetch "^5.0.0"
+
+"@aleohq/wasm@0.5.9":
+  version "0.5.9"
+  resolved "https://registry.yarnpkg.com/@aleohq/wasm/-/wasm-0.5.9.tgz#f8e8e76b5cd314fec2ae97b37bef24500aeb1e38"
+  integrity sha512-RHffnc+EKCVNLHHNlylJxM5uXzvKToMjz5sNun6MbynU8d9zGoNizD3C5Dieg1VEfhPYQSocPwdUb2DCQPnMxA==
+
 "@alloc/quick-lru@^5.2.0":
   version "5.2.0"
   resolved "https://registry.yarnpkg.com/@alloc/quick-lru/-/quick-lru-5.2.0.tgz#7bf68b20c0a350f936915fcae06f58e32007ce30"
@@ -3402,6 +3423,13 @@ prisma@^5.2.0:
   dependencies:
     "@prisma/engines" "5.2.0"
 
+prisma@^5.2.0:
+  version "5.2.0"
+  resolved "https://registry.yarnpkg.com/prisma/-/prisma-5.2.0.tgz#a302dc2635cdec1d22d552ece837fb29a03563b9"
+  integrity sha512-FfFlpjVCkZwrqxDnP4smlNYSH1so+CbfjgdpioFzGGqlQAEm6VHAYSzV7jJgC3ebtY9dNOhDMS2+4/1DDSM7bQ==
+  dependencies:
+    "@prisma/engines" "5.2.0"
+
 private@^0.1.6, private@~0.1.5:
   version "0.1.8"
   resolved "https://registry.yarnpkg.com/private/-/private-0.1.8.tgz#2381edb3689f7a53d653190060fcf822d2f368ff"
@@ -3890,6 +3918,16 @@ taffydb@2.6.2:
   version "2.6.2"
   resolved "https://registry.yarnpkg.com/taffydb/-/taffydb-2.6.2.tgz#7cbcb64b5a141b6a2efc2c5d2c67b4e150b2a268"
   integrity sha512-y3JaeRSplks6NYQuCOj3ZFMO3j60rTwbuKCvZxsAraGYH2epusatvZ0baZYA01WsGqJBq/Dl6vOrMUJqyMj8kA==
+
+taffydb@2.6.2:
+  version "2.6.2"
+  resolved "https://registry.yarnpkg.com/taffydb/-/taffydb-2.6.2.tgz#7cbcb64b5a141b6a2efc2c5d2c67b4e150b2a268"
+  integrity sha512-y3JaeRSplks6NYQuCOj3ZFMO3j60rTwbuKCvZxsAraGYH2epusatvZ0baZYA01WsGqJBq/Dl6vOrMUJqyMj8kA==
+
+tailwind-merge@^1.14.0:
+  version "1.14.0"
+  resolved "https://registry.yarnpkg.com/tailwind-merge/-/tailwind-merge-1.14.0.tgz#e677f55d864edc6794562c63f5001f45093cdb8b"
+  integrity sha512-3mFKyCo/MBcgyOTlrY8T7odzZFx+w+qKSMAmdFzRvqBfLlSigU6TZnlFHK0lkMwj9Bj8OYU+9yW9lmGuS0QEnQ==
 
 tailwindcss@3.3.3:
   version "3.3.3"
