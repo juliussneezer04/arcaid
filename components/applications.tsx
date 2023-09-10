@@ -11,6 +11,7 @@ import Lottie from "lottie-react";
 import { Box } from "@mui/material";
 import { ARCAID_CREATE_FINANCIAL_RECORD_CODE } from "@/config";
 import { cn } from "@/lib/utils";
+import { Account, ProgramManager } from "@aleohq/sdk";
 
 type Application = {
   studentIncome: number;
