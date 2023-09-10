@@ -7,6 +7,8 @@ import { ADMIN_ORG_ID } from "@/lib/constants";
 import { Dialog } from "@headlessui/react";
 import { Button, DialogTitle, DialogContent, DialogContentText, TextField, DialogActions } from "@mui/material";
 import { ChangeEvent, useState } from "react";
+import animation_lmcw3nkq from "../assets/animation_lmcw3nkq.json";
+import Lottie from "lottie-react";
 
 export default function DashboardPage() {
   const { userMemberships, isLoaded } = useOrganizationList({
@@ -68,7 +70,7 @@ export default function DashboardPage() {
       const url = URL.createObjectURL(blob);
       const a = document.createElement('a');
       a.href = url;
-      a.download = 'file.txt';
+      a.download = '_file.txt';
       a.click();
       URL.revokeObjectURL(url);
 
@@ -92,9 +94,7 @@ export default function DashboardPage() {
 
   if (!isLoaded) {
     return (<>
-      <div className="absolute right-1/2 bottom-1/2  transform translate-x-1/2 translate-y-1/2 ">
-        <div className="border-t-transparent border-solid animate-spin  rounded-full border-blue-400 border-8 h-64 w-64"></div>
-      </div>
+      <Lottie animationData={animation_lmcw3nkq} loop={true} />
     </>)
   }
 
@@ -118,15 +118,7 @@ export default function DashboardPage() {
         </div>
       </div>
 
-      <header className="flex justify-between py-6 px-12 bg-white dark:bg-gray-800 shadow-md">
-        <div className="flex-grow"></div>
-        <button
-          className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full dark:bg-blue-400 dark:hover:bg-blue-300"
-          onClick={openDialog}
-        >
-          Generate USB Encryption
-        </button>
-        <div className="flex-grow"></div>
+      <header className="flex justify-end py-6 px-12 bg-white dark:bg-gray-800 shadow-md">
         <UserButton afterSignOutUrl="/" />
       </header>
 
@@ -165,6 +157,13 @@ export default function DashboardPage() {
           </div>
         </div>
       </div>
+
+      <button
+        className={isDialogOpen ? "hidden" : "absolute bottom-4 left-4 z-50 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full dark:bg-blue-400 dark:hover:bg-blue-300"}
+        onClick={openDialog}
+      >
+        Generate USB Encryption
+      </button>
     </>
   );
 }
