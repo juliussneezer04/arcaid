@@ -16,14 +16,7 @@ import Lottie from "lottie-react";
 import animation_lmd22m25 from "../assets/animation_lmd22m25.json";
 import animation_lmd0dti7 from "../assets/animation_lmd0dti7.json";
 import StyledDropzone from "./dropzone";
-
-type Application = {
-  studentIncome: string;
-  householdIncome: string;
-  expectedFamilyContribution: string;
-  institution: string;
-  applicationHash: string;
-};
+import { Application } from "@/interfaces";
 
 const INSTITUTIONS = [
   "University of Pennsylvania",
