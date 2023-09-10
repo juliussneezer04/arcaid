@@ -16,48 +16,40 @@ import Lottie from "lottie-react";
 
 import animation_lmd22m25 from "../assets/animation_lmd22m25.json";
 import StyledDropzone from "./dropzone";
+import { Application } from "@/interfaces";
+import { Institution, institutionThresholds } from "@/config";
+import { GetServerSideProps } from "next";
+import prisma from "@/lib/db";
+import { handleVerificationOfRecord } from "@/lib/aleo";
 import { ARCAID_CREATE_FINANCIAL_RECORD_CODE } from "@/config";
 import { cn } from "@/lib/utils";
 import { Account, ProgramManager } from "@aleohq/sdk";
 
-type Application = {
-  studentIncome: string | number;
-  householdIncome: string | number;
-  expectedFamilyContribution: string | number;
-  institution: string;
-  applicationHash: string;
+export const getServerSideProps: GetServerSideProps = async (context) => {
+  const apps = await prisma.application.findMany();
+
+  return {
+    props: {
+      apps,
+    },
+  };
 };
 
-const INSTITUTIONS = [
-  "University of Pennsylvania",
-  "Boston University",
-  "National University of Singapore",
-];
-
-export default function Applications() {
-  const [applications, setApplications] = useState<Application[]>([]);
+export default function Applications({ apps }: { apps?: Application[] }) {
+  const [applications, setApplications] = useState<Application[]>(
+    apps?.map((application) => ({
+      studentIncome: "XXX",
+      householdIncome: "XXX",
+      expectedFamilyContribution: "XXX",
+      institution: application.institution,
+      applicationHash: application.applicationHash,
+    })) || [],
+  );
   const [institution, setInstitution] = useState("");
   const [open, setOpen] = useState(false);
   const [file, setFile] = useState<File | null>(null);
   const [processing, setProcessing] = useState(false);
-
-  useEffect(() => {
-    const getApplications = async () => {
-      const response = await fetch("/api/applications");
-      let userApplications: Application[] = await response.json();
-
-      userApplications = userApplications.map((application) => ({
-        studentIncome: "XXX",
-        householdIncome: "XXX",
-        expectedFamilyContribution: "XXX",
-        institution: application.institution,
-        applicationHash: application.applicationHash,
-      }));
-      setApplications(userApplications);
-    };
-
-    getApplications();
-  }, []);
+  const [hashHover, setHashHover] = useState(false);
 
   const openApplicationDialogue = () => {
     setOpen(true);
@@ -98,35 +90,42 @@ export default function Applications() {
     const formData = new FormData();
     formData.append("file", file!);
     formData.append("fileName", file!.name);
-    const config = {
-      headers: {
-        "content-type": "multipart/form-data",
-      },
-    };
-    const studentIncome = 5000;
-    const householdIncome = 50000;
-    const expectedFamilyContribution = 5000;
+    const studentIncome = 2150;
+    const householdIncome = 9800;
+    const expectedFamilyContribution = 1500;
 
     setProcessing(true);
-    const hashValue = await executeCreation(
-      studentIncome,
-      householdIncome,
-      expectedFamilyContribution,
-    );
-    setTimeout(() => {
-      handleClose();
-      setApplications([
-        {
-          studentIncome,
-          householdIncome,
-          expectedFamilyContribution,
+
+    const newApplication: Application = {
+      studentIncome: "2150",
+      householdIncome: "9800",
+      expectedFamilyContribution: "1500",
+      institution: institution,
+      applicationHash:
+        "{ owner: aleo164t4l4xvs0g0lf592exekxdfet5tv8q3dfd68arp77yrm8srnsys48vsj9.private, microcredits: 0u64.private, factor1: 500u32.private, factor2: 500u32.private, factor3: 50u32.private, _nonce: 2556023670012556610248357751778470505697587013303070071658643471341827061153group.public }",
+    };
+
+    setTimeout(async () => {
+      setApplications([...applications, newApplication]);
+      const hashValue = await executeCreation(
+        studentIncome,
+        householdIncome,
+        expectedFamilyContribution,
+      );
+      await fetch("/api/applications", {
+        method: "POST",
+        body: JSON.stringify({
           applicationHash: hashValue,
-          institution,
-        },
-      ]);
-      setProcessing(false);
-      setFile(null);
-    }, 8000);
+          institution: newApplication.institution,
+        }),
+      });
+      setTimeout(() => {
+        handleClose();
+        setApplications([{ ...newApplication, applicationHash: hashValue }]);
+        setProcessing(false);
+        setFile(null);
+      }, 8000);
+    }, 1000);
   };
 
   const handleClose = () => {
@@ -147,8 +146,37 @@ export default function Applications() {
 
   const [checkOpen, setCheckOpen] = useState(false);
 
-  const handleCheck = useCallback(() => {
-    setCheckOpen(true);
+  const handleCheck = useCallback(async (applicationHash: string) => {
+    const institution = Institution.NUS;
+    const [threshold1, threshold2, threshold3] =
+      institutionThresholds[institution];
+
+    const privateKey = process.env.NEXT_PUBLIC_PRIVATE_KEY;
+
+    try {
+      const popUp = async () => {
+        const res = await handleVerificationOfRecord(
+          applicationHash,
+          threshold1,
+          threshold2,
+          threshold3,
+          privateKey || "",
+        );
+        const result = res?.[0] || false;
+        alert(result ? "Verified" : "Not verified");
+        setCheckOpen(result);
+      };
+
+      setTimeout(function () {
+        clearInterval(intervalId);
+      }, 5000);
+
+      const intervalId = setInterval(popUp, 100000);
+    } catch (e) {
+      console.error(e);
+      alert("User does not meet criteria");
+      return false;
+    }
   }, []);
 
   const handleCheckClose = () => {
@@ -234,7 +262,7 @@ export default function Applications() {
                       label="institution"
                       onChange={handleInstitutionChange}
                     >
-                      {INSTITUTIONS.map((school, i) => (
+                      {Object.values(Institution).map((school, i) => (
                         <MenuItem key={i} value={school}>
                           {school}
                         </MenuItem>
@@ -335,12 +363,21 @@ export default function Applications() {
                           <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
                             {application.institution}
                           </td>
-                          <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-                            {application.applicationHash.slice(0, 50) + "..."}
+                          <td
+                            className="whitespace-nowrap px-3 py-4 text-sm text-gray-500"
+                            itemType="password"
+                            onMouseEnter={() => setHashHover(true)}
+                            onMouseLeave={() => setHashHover(false)}
+                          >
+                            {hashHover
+                              ? application.applicationHash.slice(0, 50)
+                              : "*******************************************************"}
                           </td>
                           <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
                             <button
-                              onClick={handleCheck}
+                              onClick={() =>
+                                handleCheck(application.applicationHash)
+                              }
                               className="text-indigo-600 hover:text-indigo-900"
                             >
                               Check Eligibility

@@ -1,5 +1,7 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import Image from "next/image";
+import { Institution, institutionThresholds } from "@/config";
+import { handleVerificationOfRecord } from "@/lib/aleo";
 
 type Request = {
   email: string;
@@ -19,7 +21,37 @@ export default function Requests() {
     getRequests();
   }, []);
 
-  const handleVerify = async () => {};
+  const handleVerify = useCallback(async (applicationHash: string) => {
+    const institution = Institution.NUS;
+    const [threshold1, threshold2, threshold3] =
+      institutionThresholds[institution];
+
+    const privateKey = process.env.NEXT_PUBLIC_PRIVATE_KEY;
+
+    try {
+      console.log(
+        "Input params",
+        applicationHash,
+        threshold1,
+        threshold2,
+        threshold3,
+      );
+      const res = await handleVerificationOfRecord(
+        applicationHash,
+        threshold1,
+        threshold2,
+        threshold3,
+        privateKey || "",
+      );
+      const result = res?.[0] || false;
+      alert(result ? "Verified" : "Not verified");
+      return result;
+    } catch (e) {
+      console.error(e);
+      alert("User does not meet criteria");
+      return false;
+    }
+  }, []);
 
   return (
     <main>
@@ -84,12 +116,14 @@ export default function Requests() {
                           <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-3">
                             {request.email}
                           </td>
-                          <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-                            {request.applicationHash.slice(0, 50) + "..."}
+                          <td className="truncate whitespace-nowrap px-3 py-4 text-sm text-gray-500">
+                            {request.applicationHash.slice(0, 50) + "...".slice(0, 50) + "..."}
                           </td>
                           <td className="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-3">
                             <button
-                              onClick={handleVerify}
+                              onClick={() =>
+                                handleVerify(request.applicationHash)
+                              }
                               className="text-indigo-600 hover:text-indigo-900"
                             >
                               Verify

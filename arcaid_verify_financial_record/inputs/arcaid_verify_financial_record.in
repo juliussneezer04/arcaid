@@ -1,0 +1,14 @@
+// The program input for arcaid_verify_financial_record/src/main.leo
+
+[main]
+userRecord: FinancialRecord = FinancialRecord {
+  owner: aleo1k552e8e7c0plpm0pjk5kafe0wylpn8qvjpsnnyxhlgw66g6kjqysrfs6kv,
+  microcredits: 10u64,
+  factor1: 100u32,
+  factor2: 100u32,
+  factor3: 100u32,
+   _nonce: 661901642905281065575358583071347542160248627750537954509114007526888699661group
+};
+factor1Threshold: u32 = 101u32;
+factor2Threshold: u32 = 101u32;
+factor3Threshold: u32 = 101u32;

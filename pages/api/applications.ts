@@ -25,7 +25,7 @@ export default async function handler(
 
   if (req.method === "GET") {
     let applications;
-    if (isAdmin) {
+    if (isAdmin || true) {
       applications = await prisma.application.findMany();
     } else {
       applications = await prisma.application.findMany({

@@ -28,6 +28,27 @@
   resolved "https://registry.yarnpkg.com/@aleohq/wasm/-/wasm-0.5.9.tgz#f8e8e76b5cd314fec2ae97b37bef24500aeb1e38"
   integrity sha512-RHffnc+EKCVNLHHNlylJxM5uXzvKToMjz5sNun6MbynU8d9zGoNizD3C5Dieg1VEfhPYQSocPwdUb2DCQPnMxA==
 
+"@aleohq/nodejs@0.5.9":
+  version "0.5.9"
+  resolved "https://registry.yarnpkg.com/@aleohq/nodejs/-/nodejs-0.5.9.tgz#ff98468b6096b592713b9fd7d4bd8f80d9e5f6db"
+  integrity sha512-qw5KbSSnT7VnlNbp8uRPc2PVj7VVjzytxvcNBDRxJVDX3YxvDA1r03CfzmkilZjynBUFA+WtU3o9+/b2V5ANfw==
+
+"@aleohq/sdk@^0.5.10":
+  version "0.5.10"
+  resolved "https://registry.yarnpkg.com/@aleohq/sdk/-/sdk-0.5.10.tgz#95e9f7ca337b7227cd91be68b5c7f41b30b2f376"
+  integrity sha512-kyYC7muysi/f4AXEgNkAV1muP0Z75RrtELhJKATOlzJOThI/yCEyW/16xgGIaKq2azQoTXJxWSeCb1gfD+/JaA==
+  dependencies:
+    "@aleohq/nodejs" "0.5.9"
+    "@aleohq/wasm" "0.5.9"
+    axios "^1.1.3"
+    jsdoc "^3.6.11"
+    unfetch "^5.0.0"
+
+"@aleohq/wasm@0.5.9":
+  version "0.5.9"
+  resolved "https://registry.yarnpkg.com/@aleohq/wasm/-/wasm-0.5.9.tgz#f8e8e76b5cd314fec2ae97b37bef24500aeb1e38"
+  integrity sha512-RHffnc+EKCVNLHHNlylJxM5uXzvKToMjz5sNun6MbynU8d9zGoNizD3C5Dieg1VEfhPYQSocPwdUb2DCQPnMxA==
+
 "@alloc/quick-lru@^5.2.0":
   version "5.2.0"
   resolved "https://registry.yarnpkg.com/@alloc/quick-lru/-/quick-lru-5.2.0.tgz#7bf68b20c0a350f936915fcae06f58e32007ce30"
@@ -3892,6 +3913,11 @@ swr@2.2.0:
   integrity sha512-AjqHOv2lAhkuUdIiBu9xbuettzAzWXmCEcLONNKJRba87WAefz8Ca9d6ds/SzrPc235n1IxWYdhJ2zF3MNUaoQ==
   dependencies:
     use-sync-external-store "^1.2.0"
+
+taffydb@2.6.2:
+  version "2.6.2"
+  resolved "https://registry.yarnpkg.com/taffydb/-/taffydb-2.6.2.tgz#7cbcb64b5a141b6a2efc2c5d2c67b4e150b2a268"
+  integrity sha512-y3JaeRSplks6NYQuCOj3ZFMO3j60rTwbuKCvZxsAraGYH2epusatvZ0baZYA01WsGqJBq/Dl6vOrMUJqyMj8kA==
 
 taffydb@2.6.2:
   version "2.6.2"
