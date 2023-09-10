@@ -1,6 +1,7 @@
 import { clerkClient } from "@clerk/nextjs";
 import { getAuth } from "@clerk/nextjs/server";
 import type { NextApiRequest, NextApiResponse } from "next";
+import crypto from "crypto";
 
 export default async function handler(
   req: NextApiRequest,
@@ -12,9 +13,10 @@ export default async function handler(
     return res.status(401).json({ error: "Unauthorized" });
   }
 
-  const user = userId ? await clerkClient.users.getUser(userId) : null;
+  const code = req.body.code;
 
-  // use the user object to decide what data to return
+  // Hash the code using SHA-256
+  const hash = crypto.createHash('sha256').update(code).digest('hex');
 
-  return res.status(200).json(user);
+  return res.status(200).json({ hashedCode: hash });
 }

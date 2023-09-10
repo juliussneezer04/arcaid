@@ -1,16 +1,14 @@
 import { Dialog, Transition } from "@headlessui/react";
-import React, { Fragment, useState } from "react";
+import React, { Fragment } from "react";
 
 export default function TimeWarningDialog({
-  TriggerButton,
   isOpen,
   setIsOpen,
   onClose,
 }: {
-  TriggerButton: React.ReactNode;
   isOpen: boolean;
   setIsOpen: (isOpen: boolean) => void;
-  onClose: () => void;
+  onClose: (e: React.MouseEvent<HTMLButtonElement>) => void;
 }) {
   function closeModal() {
     setIsOpen(false);
@@ -18,8 +16,6 @@ export default function TimeWarningDialog({
 
   return (
     <>
-      <div className="">{TriggerButton}</div>
-
       <Transition appear show={isOpen} as={Fragment}>
         <Dialog as="div" className="relative z-10" onClose={closeModal}>
           <Transition.Child
@@ -66,8 +62,8 @@ export default function TimeWarningDialog({
                     <button
                       type="button"
                       className="inline-flex justify-center rounded-md border border-transparent bg-blue-100 px-4 py-2 text-sm font-medium text-blue-900 hover:bg-blue-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
-                      onClick={() => {
-                        onClose();
+                      onClick={(e) => {
+                        onClose(e);
                         closeModal();
                       }}
                     >

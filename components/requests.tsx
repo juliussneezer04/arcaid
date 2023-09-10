@@ -1,19 +1,28 @@
-import React from "react";
+import { useState, useEffect } from "react";
 
-const records = [
-  {
-    name: "Lindsay Walton",
-    title: "Front-end Developer",
-    email: "lindsay.walton@example.com",
-    role: "Member",
-  },
-  // More people...
-];
+type Request = {
+  email: string;
+  applicationHash: string;
+};
 
 export default function Requests() {
+  const [requests, setRequests] = useState<Request[]>([]);
+
+  useEffect(() => {
+    const getRequests = async () => {
+      const response = await fetch("/api/applications");
+      const userRequests: Request[] = await response.json();
+      setRequests(userRequests);
+    };
+
+    getRequests();
+  }, []);
+
+  const handleVerify = async () => {};
+
   return (
     <main>
-      <div className="relative isolate overflow-hidden pt-32">
+      <div className="relative isolate overflow-hidden pt-6">
         <div className="px-4 sm:px-6 lg:px-8">
           <div className="sm:flex sm:items-center">
             <div className="sm:flex-auto">
@@ -21,8 +30,7 @@ export default function Requests() {
                 Requests Made
               </h1>
               <p className="mt-2 text-sm text-gray-700">
-                An overview of all the requests you&apos;ve made to your school
-                co-ordinator.
+                An overview of all the requests made to your school.
               </p>
             </div>
           </div>
@@ -36,57 +44,39 @@ export default function Requests() {
                         scope="col"
                         className="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-3"
                       >
-                        Name
-                      </th>
-                      <th
-                        scope="col"
-                        className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
-                      >
-                        Title
-                      </th>
-                      <th
-                        scope="col"
-                        className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
-                      >
                         Email
                       </th>
                       <th
                         scope="col"
                         className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
                       >
-                        Role
+                        Application Hash
                       </th>
                       <th
                         scope="col"
                         className="relative py-3.5 pl-3 pr-4 sm:pr-3"
                       >
-                        <span className="sr-only">Edit</span>
+                        <span className="sr-only">Verify</span>
                       </th>
                     </tr>
                   </thead>
                   <tbody className="bg-white">
-                    {records.map((person) => (
-                      <tr key={person.email} className="even:bg-gray-50">
+                    {requests.map((request) => (
+                      <tr key={request.email} className="even:bg-gray-50">
                         <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-3">
-                          {person.name}
+                          {request.email}
                         </td>
                         <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-                          {person.title}
-                        </td>
-                        <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-                          {person.email}
-                        </td>
-                        <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-                          {person.role}
+                          {request.applicationHash}
                         </td>
                         <td className="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-3">
-                          <a
-                            href="#"
+                          <button
+                            onClick={handleVerify}
                             className="text-indigo-600 hover:text-indigo-900"
                           >
-                            Edit
-                            <span className="sr-only">, {person.name}</span>
-                          </a>
+                            Verify
+                            <span className="sr-only">,</span>
+                          </button>
                         </td>
                       </tr>
                     ))}
