@@ -7,12 +7,15 @@ type Request = {
 
 export default function Requests() {
   const [requests, setRequests] = useState<Request[]>([]);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     const getRequests = async () => {
+      setLoading(true);
       const response = await fetch("/api/applications");
       const userRequests: Request[] = await response.json();
       setRequests(userRequests);
+      setLoading(false);
     };
 
     getRequests();
@@ -61,25 +64,36 @@ export default function Requests() {
                     </tr>
                   </thead>
                   <tbody className="bg-white">
-                    {requests.map((request) => (
-                      <tr key={request.email} className="even:bg-gray-50">
-                        <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-3">
-                          {request.email}
-                        </td>
-                        <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-                          {request.applicationHash}
-                        </td>
-                        <td className="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-3">
-                          <button
-                            onClick={handleVerify}
-                            className="text-indigo-600 hover:text-indigo-900"
-                          >
-                            Verify
-                            <span className="sr-only">,</span>
-                          </button>
+                    {requests.length === 0 ? (
+                      <tr>
+                        <td
+                          colSpan={5}
+                          className="px-3 py-4 text-center text-sm text-gray-500"
+                        >
+                          No rows available
                         </td>
                       </tr>
-                    ))}
+                    ) : (
+                      requests.map((request) => (
+                        <tr key={request.email} className="even:bg-gray-50">
+                          <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-3">
+                            {request.email}
+                          </td>
+                          <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
+                            {request.applicationHash}
+                          </td>
+                          <td className="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-3">
+                            <button
+                              onClick={handleVerify}
+                              className="text-indigo-600 hover:text-indigo-900"
+                            >
+                              Verify
+                              <span className="sr-only">,</span>
+                            </button>
+                          </td>
+                        </tr>
+                      ))
+                    )}
                   </tbody>
                 </table>
               </div>
