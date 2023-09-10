@@ -336,7 +336,7 @@ export default function Applications() {
                             {application.institution}
                           </td>
                           <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-                            {application.applicationHash}
+                            {application.applicationHash.slice(0, 50) + "..."}
                           </td>
                           <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
                             <button
