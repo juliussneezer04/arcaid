@@ -1,4 +1,4 @@
-![arcaid](https://github.com/juliussneezer04/arcaid/assets/95898480/5eec5c86-909d-4858-a030-ad0beee89019)
+![arcaid](https://github.com/juliussneezer04/arcaid/assets/68603272/c7966dbb-c1e8-4923-8722-83e14be50a4d)
 
 ![Vercel](https://img.shields.io/badge/vercel-%23000000.svg?style=for-the-badge&logo=vercel&logoColor=white) 
 ![Postgres](https://img.shields.io/badge/postgres-%23316192.svg?style=for-the-badge&logo=postgresql&logoColor=white)
@@ -33,4 +33,4 @@ Every year, 💰 more than $200 billion in federal student aid is disbursed thro
 
 ## 🤗 Getting Started
 
-🔗 Visit [our website](https://arcaid.com) to get started on your easier & more private financial aid application journey.
+🔗 Visit [our website](https://arcaid.study) to get started on your easier & more private financial aid application journey.
