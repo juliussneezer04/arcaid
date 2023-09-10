@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Dialog } from "@headlessui/react";
 import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
+import Image from 'next/image';
 import {
   ArrowPathIcon,
   ChevronRightIcon,
@@ -19,23 +20,29 @@ const navigation: any[] = [
 ];
 const primaryFeatures = [
   {
-    name: "Push to deploy.",
+    name: "Masked Data:",
     description:
-      "Lorem ipsum, dolor sit amet consectetur adipisicing elit aute id magna.",
+      "Apply without revealing exact finances",
     icon: CloudArrowUpIcon,
   },
   {
-    name: "SSL certificates.",
+    name: "Bulk Apply:",
     description:
-      "Anim aute id magna aliqua ad ad non deserunt sunt. Qui irure qui lorem cupidatat commodo.",
+      "Apply for multiple schools with one click",
     icon: LockClosedIcon,
   },
   {
-    name: "Database backups.",
+    name: "Instant Verify:",
     description:
-      "Ac tincidunt sapien vehicula erat auctor pellentesque rhoncus.",
+      "Know your eligibility in real time",
     icon: ServerIcon,
   },
+  {
+    name: "Private:",
+    description:
+      "Zero-Knowledge Proofs keep your financial data private. Schools only see 'Eligible' or 'Not Eligible'",
+    icon: ServerIcon,
+  }
 ];
 const secondaryFeatures = [
   {
@@ -61,61 +68,36 @@ const secondaryFeatures = [
   },
 ];
 const featuredTestimonial = {
-  body: "Integer id nunc sit semper purus. Bibendum at lacus ut arcu blandit montes vitae auctor libero. Hac condimentum dignissim nibh vulputate ut nunc. Amet nibh orci mi venenatis blandit vel et proin. Non hendrerit in vel ac diam.",
+  body: "I have always been uneasy about sharing my financial details. But because of ArcAid, I get to apply to multiple schools easily while keeping my information locked away. A game-changer!",
   author: {
-    name: "Brenna Goyette",
-    handle: "brennagoyette",
+    name: "Brenna G.",
+    handle: "Graduate Applicant",
     imageUrl:
-      "https://images.unsplash.com/photo-1550525811-e5869dd03032?ixlib=rb-=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=1024&h=1024&q=80",
-    logoUrl: "https://tailwindui.com/img/logos/savvycal-logo-gray-900.svg",
+      "https://images.unsplash.com/photo-1550525811-e5869dd03032?ixlib=rb-=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=1024&h=1024&q=80"
   },
 };
 const testimonials = [
   [
     [
       {
-        body: "Laborum quis quam. Dolorum et ut quod quia. Voluptas numquam delectus nihil. Aut enim doloremque et ipsam.",
+        body: "I tried ArcAid and I got my eligibility confirmed for 3 schools in less than 30 minutes! I used to spend days on this?",
         author: {
-          name: "Leslie Alexander",
-          handle: "lesliealexander",
+          name: "Leslie A.",
+          handle: "College Student",
           imageUrl:
             "https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
         },
       },
       // More testimonials...
-    ],
-    [
-      {
-        body: "Aut reprehenderit voluptatem eum asperiores beatae id. Iure molestiae ipsam ut officia rem nulla blanditiis.",
-        author: {
-          name: "Lindsay Walton",
-          handle: "lindsaywalton",
-          imageUrl:
-            "https://images.unsplash.com/photo-1517841905240-472988babdf9?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
-        },
-      },
-      // More testimonials...
-    ],
+    ]
   ],
   [
     [
       {
-        body: "Voluptas quos itaque ipsam in voluptatem est. Iste eos blanditiis repudiandae. Earum deserunt enim molestiae ipsum perferendis recusandae saepe corrupti.",
+        body: "Since we started using ArcAid, the time we spend on financial aid verification has been cut in half.",
         author: {
-          name: "Tom Cook",
-          handle: "tomcook",
-          imageUrl:
-            "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
-        },
-      },
-      // More testimonials...
-    ],
-    [
-      {
-        body: "Molestias ea earum quos nostrum doloremque sed. Quaerat quasi aut velit incidunt excepturi rerum voluptatem minus harum.",
-        author: {
-          name: "Leonard Krasner",
-          handle: "leonardkrasner",
+          name: "Leonard K.",
+          handle: "Financial Aid Director",
           imageUrl:
             "https://images.unsplash.com/photo-1519345182560-3f2917c472ef?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
         },
@@ -230,6 +212,7 @@ function classNames(...classes: string[]) {
 
 export default function LandingPage() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+
   const { isLoaded, userId } = useAuth();
   const signedIn = isLoaded && userId;
 
@@ -354,7 +337,7 @@ export default function LandingPage() {
 
       <main>
         {/* Hero section */}
-        <div className="relative isolate pt-14">
+        <div className="relative isolate pt-14 mb-16">
           <svg
             className="absolute inset-0 -z-10 h-full w-full stroke-gray-200 [mask-image:radial-gradient(100%_100%_at_top_right,white,transparent)]"
             aria-hidden="true"
@@ -386,32 +369,11 @@ export default function LandingPage() {
           </svg>
           <div className="mx-auto max-w-7xl px-6 py-24 sm:py-32 lg:flex lg:items-center lg:gap-x-10 lg:px-8 lg:py-40">
             <div className="mx-auto max-w-2xl lg:mx-0 lg:flex-auto">
-              <div className="flex">
-                <div className="relative flex items-center gap-x-4 rounded-full px-4 py-1 text-sm leading-6 text-gray-600 ring-1 ring-gray-900/10 hover:ring-gray-900/20">
-                  <span className="font-semibold text-indigo-600">
-                    Introducing
-                  </span>
-                  {/* <span
-                    className="h-4 w-px bg-gray-900/10"
-                    aria-hidden="true"
-                  />
-                  <a href="#" className="flex items-center gap-x-1">
-                    <span className="absolute inset-0" aria-hidden="true" />
-                    See open positions
-                    <ChevronRightIcon
-                      className="-mr-2 h-5 w-5 text-gray-400"
-                      aria-hidden="true"
-                    />
-                  </a> */}
-                </div>
-              </div>
               <h1 className="mt-10 max-w-lg text-4xl font-bold tracking-tight text-gray-900 sm:text-6xl">
-                Z-Thea
+                ArcAid
               </h1>
               <p className="mt-6 text-lg leading-8 text-gray-600">
-                Esse id magna consectetur fugiat non dolor in ad laboris magna
-                laborum ea consequat. Nisi irure aliquip nisi adipisicing veniam
-                voluptate id. In veniam incididunt ex veniam adipisicing sit.
+                Apply for Financial Aid: The Faster, More Private Way
               </p>
               <div className="mt-10 flex items-center gap-x-6">
                 <a
@@ -465,60 +427,58 @@ export default function LandingPage() {
         </div>
 
         {/* Logo cloud */}
-        <div className="mx-auto max-w-7xl px-6 lg:px-8">
+        <div className="mx-auto max-w-7xl px-6 lg:px-8 mb-16">
           <div className="mx-auto grid max-w-lg grid-cols-4 items-center gap-x-8 gap-y-12 sm:max-w-xl sm:grid-cols-6 sm:gap-x-10 sm:gap-y-14 lg:mx-0 lg:max-w-none lg:grid-cols-5">
             <img
-              className="col-span-2 max-h-12 w-full object-contain lg:col-span-1"
-              src="https://tailwindui.com/img/logos/158x48/transistor-logo-gray-400.svg"
+              className="col-span-2 max-h-36 w-full object-contain lg:col-span-1"
+              src="/kisspng-harvard-university-logo-harvard-crimson-football-5b915f071e0344.9092574415362537031229.png"
               alt="Transistor"
-              width={158}
-              height={48}
+              width={474}
+              height={144}
             />
             <img
-              className="col-span-2 max-h-12 w-full object-contain lg:col-span-1"
-              src="https://tailwindui.com/img/logos/158x48/reform-logo-gray-400.svg"
+              className="col-span-2 max-h-24 w-full object-contain lg:col-span-1"
+              src="/MIT-Logo.png"
               alt="Reform"
-              width={158}
-              height={48}
+              width={316}
+              height={96}
             />
             <img
               className="col-span-2 max-h-12 w-full object-contain lg:col-span-1"
-              src="https://tailwindui.com/img/logos/158x48/tuple-logo-gray-400.svg"
+              src="/National_University_of_Singapore_logo_NUS.png"
               alt="Tuple"
               width={158}
               height={48}
             />
             <img
               className="col-span-2 max-h-12 w-full object-contain sm:col-start-2 lg:col-span-1"
-              src="https://tailwindui.com/img/logos/158x48/savvycal-logo-gray-400.svg"
+              src="/nyu-logo.png"
               alt="SavvyCal"
               width={158}
               height={48}
             />
             <img
-              className="col-span-2 col-start-2 max-h-12 w-full object-contain sm:col-start-auto lg:col-span-1"
-              src="https://tailwindui.com/img/logos/158x48/statamic-logo-gray-400.svg"
+              className="col-span-2 col-start-2 max-h-24 w-full object-contain sm:col-start-auto lg:col-span-1"
+              src="/UniversityofPennsylvania_FullLogo_RGB-4_0.png"
               alt="Statamic"
-              width={158}
-              height={48}
+              width={316}
+              height={96}
             />
+
           </div>
         </div>
 
         {/* Feature section */}
-        <div className="mx-auto mt-32 max-w-7xl sm:mt-56 sm:px-6 lg:px-8">
+        <div className="mx-auto mt-32 max-w-7xl sm:mt-56 sm:px-6 lg:px-8 mb-16"> 
           <div className="relative isolate overflow-hidden bg-gray-900 px-6 py-20 sm:rounded-3xl sm:px-10 sm:py-24 lg:py-24 xl:px-24">
             <div className="mx-auto grid max-w-2xl grid-cols-1 gap-x-8 gap-y-16 sm:gap-y-20 lg:mx-0 lg:max-w-none lg:grid-cols-2 lg:items-center lg:gap-y-0">
               <div className="lg:row-start-2 lg:max-w-md">
                 <h2 className="text-3xl font-bold tracking-tight text-white sm:text-4xl">
-                  Boost your productivity.
+                  Why expose your sensitive financial information just to apply for financial aid?
                   <br />
-                  Start using our app today.
                 </h2>
                 <p className="mt-6 text-lg leading-8 text-gray-300">
-                  Ac euismod vel sit maecenas id pellentesque eu sed
-                  consectetur. Malesuada adipiscing sagittis vel nulla. Ac
-                  euismod vel sit maecenas.
+                  Meet ArcAid - the game changer  that keeps your data private while mass applying for financial aid
                 </p>
               </div>
               <img
@@ -560,110 +520,8 @@ export default function LandingPage() {
           </div>
         </div>
 
-        {/* Feature section */}
-        <div className="mx-auto mt-32 max-w-7xl px-6 sm:mt-56 lg:px-8">
-          <div className="mx-auto max-w-2xl lg:text-center">
-            <h2 className="text-base font-semibold leading-7 text-indigo-600">
-              Deploy faster
-            </h2>
-            <p className="mt-2 text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
-              Everything you need to deploy your app
-            </p>
-            <p className="mt-6 text-lg leading-8 text-gray-600">
-              Quis tellus eget adipiscing convallis sit sit eget aliquet quis.
-              Suspendisse eget egestas a elementum pulvinar et feugiat blandit
-              at. In mi viverra elit nunc.
-            </p>
-          </div>
-          <div className="mx-auto mt-16 max-w-2xl sm:mt-20 lg:mt-24 lg:max-w-none">
-            <dl className="grid max-w-xl grid-cols-1 gap-x-8 gap-y-16 lg:max-w-none lg:grid-cols-3">
-              {secondaryFeatures.map((feature) => (
-                <div key={feature.name} className="flex flex-col">
-                  <dt className="flex items-center gap-x-3 text-base font-semibold leading-7 text-gray-900">
-                    <feature.icon
-                      className="h-5 w-5 flex-none text-indigo-600"
-                      aria-hidden="true"
-                    />
-                    {feature.name}
-                  </dt>
-                  <dd className="mt-4 flex flex-auto flex-col text-base leading-7 text-gray-600">
-                    <p className="flex-auto">{feature.description}</p>
-                    <p className="mt-6">
-                      <a
-                        href={feature.href}
-                        className="text-sm font-semibold leading-6 text-indigo-600"
-                      >
-                        Learn more <span aria-hidden="true">→</span>
-                      </a>
-                    </p>
-                  </dd>
-                </div>
-              ))}
-            </dl>
-          </div>
-        </div>
-
-        {/* Newsletter section */}
-        <div className="mx-auto mt-32 max-w-7xl sm:mt-56 sm:px-6 lg:px-8">
-          <div className="relative isolate overflow-hidden bg-gray-900 px-6 py-24 shadow-2xl sm:rounded-3xl sm:px-24 xl:py-32">
-            <h2 className="mx-auto max-w-2xl text-center text-3xl font-bold tracking-tight text-white sm:text-4xl">
-              Get notified when we’re launching.
-            </h2>
-            <p className="mx-auto mt-2 max-w-xl text-center text-lg leading-8 text-gray-300">
-              Reprehenderit ad esse et non officia in nulla. Id proident tempor
-              incididunt nostrud nulla et culpa.
-            </p>
-            <form className="mx-auto mt-10 flex max-w-md gap-x-4">
-              <label htmlFor="email-address" className="sr-only">
-                Email address
-              </label>
-              <input
-                id="email-address"
-                name="email"
-                type="email"
-                autoComplete="email"
-                required
-                className="min-w-0 flex-auto rounded-md border-0 bg-white/5 px-3.5 py-2 text-white shadow-sm ring-1 ring-inset ring-white/10 focus:ring-2 focus:ring-inset focus:ring-white sm:text-sm sm:leading-6"
-                placeholder="Enter your email"
-              />
-              <button
-                type="submit"
-                className="flex-none rounded-md bg-white px-3.5 py-2.5 text-sm font-semibold text-gray-900 shadow-sm hover:bg-gray-100 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
-              >
-                Notify me
-              </button>
-            </form>
-            <svg
-              viewBox="0 0 1024 1024"
-              className="absolute left-1/2 top-1/2 -z-10 h-[64rem] w-[64rem] -translate-x-1/2"
-              aria-hidden="true"
-            >
-              <circle
-                cx={512}
-                cy={512}
-                r={512}
-                fill="url(#759c1415-0410-454c-8f7c-9a820de03641)"
-                fillOpacity="0.7"
-              />
-              <defs>
-                <radialGradient
-                  id="759c1415-0410-454c-8f7c-9a820de03641"
-                  cx={0}
-                  cy={0}
-                  r={1}
-                  gradientUnits="userSpaceOnUse"
-                  gradientTransform="translate(512 512) rotate(90) scale(512)"
-                >
-                  <stop stopColor="#7775D6" />
-                  <stop offset={1} stopColor="#E935C1" stopOpacity={0} />
-                </radialGradient>
-              </defs>
-            </svg>
-          </div>
-        </div>
-
         {/* Testimonials section */}
-        <div className="relative isolate mt-32 sm:mt-56 sm:pt-32">
+        <div className="relative isolate mt-32 sm:mt-56 sm:pt-32 mb-16">
           <svg
             className="absolute inset-0 -z-10 hidden h-full w-full stroke-gray-200 [mask-image:radial-gradient(64rem_64rem_at_top,white,transparent)] sm:block"
             aria-hidden="true"
@@ -742,13 +600,8 @@ export default function LandingPage() {
                       <div className="font-semibold">
                         {featuredTestimonial.author.name}
                       </div>
-                      <div className="text-gray-600">{`@${featuredTestimonial.author.handle}`}</div>
+                      <div className="text-gray-600">{`${featuredTestimonial.author.handle}`}</div>
                     </div>
-                    <img
-                      className="h-10 w-auto flex-none"
-                      src={featuredTestimonial.author.logoUrl}
-                      alt=""
-                    />
                   </figcaption>
                 </figure>
                 {testimonials.map((columnGroup, columnGroupIdx) => (
@@ -786,7 +639,7 @@ export default function LandingPage() {
                                 <div className="font-semibold">
                                   {testimonial.author.name}
                                 </div>
-                                <div className="text-gray-600">{`@${testimonial.author.handle}`}</div>
+                                <div className="text-gray-600">{`${testimonial.author.handle}`}</div>
                               </div>
                             </figcaption>
                           </figure>
@@ -797,6 +650,65 @@ export default function LandingPage() {
                 ))}
               </div>
             </div>
+          </div>
+        </div>
+
+        {/* Newsletter section */}
+        <div className="mx-auto mt-32 max-w-7xl sm:mt-56 sm:px-6 lg:px-8">
+          <div className="relative isolate overflow-hidden bg-gray-900 px-6 py-24 shadow-2xl sm:rounded-3xl sm:px-24 xl:py-32">
+            <h2 className="mx-auto max-w-2xl text-center text-3xl font-bold tracking-tight text-white sm:text-4xl">
+              Get notified when we’re launching.
+            </h2>
+            <p className="mx-auto mt-2 max-w-xl text-center text-lg leading-8 text-gray-300">
+              Reprehenderit ad esse et non officia in nulla. Id proident tempor
+              incididunt nostrud nulla et culpa.
+            </p>
+            <form className="mx-auto mt-10 flex max-w-md gap-x-4">
+              <label htmlFor="email-address" className="sr-only">
+                Email address
+              </label>
+              <input
+                id="email-address"
+                name="email"
+                type="email"
+                autoComplete="email"
+                required
+                className="min-w-0 flex-auto rounded-md border-0 bg-white/5 px-3.5 py-2 text-white shadow-sm ring-1 ring-inset ring-white/10 focus:ring-2 focus:ring-inset focus:ring-white sm:text-sm sm:leading-6"
+                placeholder="Enter your email"
+              />
+              <button
+                type="submit"
+                className="flex-none rounded-md bg-white px-3.5 py-2.5 text-sm font-semibold text-gray-900 shadow-sm hover:bg-gray-100 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
+              >
+                Notify me
+              </button>
+            </form>
+            <svg
+              viewBox="0 0 1024 1024"
+              className="absolute left-1/2 top-1/2 -z-10 h-[64rem] w-[64rem] -translate-x-1/2"
+              aria-hidden="true"
+            >
+              <circle
+                cx={512}
+                cy={512}
+                r={512}
+                fill="url(#759c1415-0410-454c-8f7c-9a820de03641)"
+                fillOpacity="0.7"
+              />
+              <defs>
+                <radialGradient
+                  id="759c1415-0410-454c-8f7c-9a820de03641"
+                  cx={0}
+                  cy={0}
+                  r={1}
+                  gradientUnits="userSpaceOnUse"
+                  gradientTransform="translate(512 512) rotate(90) scale(512)"
+                >
+                  <stop stopColor="#7775D6" />
+                  <stop offset={1} stopColor="#E935C1" stopOpacity={0} />
+                </radialGradient>
+              </defs>
+            </svg>
           </div>
         </div>
       </main>
