@@ -2,9 +2,11 @@ import { ARCAID_CREATE_FINANCIAL_RECORD_CODE } from "@/config";
 import { useAleoWASM } from "@/hooks/useAleoWASM";
 import { Account, ProgramManager } from "@aleohq/sdk";
 import React, { useCallback, useState } from "react";
+import TimeWarningDialog from "./timeWarningDialog";
 
 export default function Applications() {
   const [isLoading, setIsLoading] = useState(false);
+  const [warningModalOpen, setWarningModalOpen] = useState(false);
   const aleo = useAleoWASM();
 
   const execute = useCallback(
@@ -53,25 +55,34 @@ export default function Applications() {
               </p>
             </div>
             <div className="mt-4 sm:ml-16 sm:mt-0 sm:flex-none">
-              <button
-                type="button"
-                onClick={() => {
+              <TimeWarningDialog
+                isOpen={warningModalOpen}
+                setIsOpen={setWarningModalOpen}
+                onClose={() => {
                   setIsLoading(true);
                   setTimeout(
                     () => console.log(execute(1000, 10000, 10000)),
                     200
                   );
                 }}
-                className="block rounded-md bg-indigo-600 px-3 py-2 text-center text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-              >
-                {!isLoading ? (
-                  <>Add Record</>
-                ) : (
-                  <div className="flex flex-col items-center justify-center animate-pulse">
-                    Loading...
-                  </div>
-                )}
-              </button>
+                TriggerButton={
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setWarningModalOpen(true);
+                    }}
+                    className="block rounded-md bg-indigo-600 px-3 py-2 text-center text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                  >
+                    {!isLoading ? (
+                      <>Add Record</>
+                    ) : (
+                      <div className="flex flex-col items-center justify-center animate-pulse">
+                        Loading...
+                      </div>
+                    )}
+                  </button>
+                }
+              />
             </div>
           </div>
           <div className="mt-8 flow-root">
