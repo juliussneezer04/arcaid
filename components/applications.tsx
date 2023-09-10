@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import Button from "@mui/material/Button";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
@@ -7,35 +7,22 @@ import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 import ClipLoader from "react-spinners/ClipLoader";
 
+import animation_lmd0dti7 from "../assets/animation_lmd0dti7.json"
+import Lottie from "lottie-react";
+import { Box } from "@mui/material";
+
 type Application = {
-  studentIncome: string;
-  householdIncome: string;
-  expectedFamilyContribution: string;
+  studentIncome: number;
+  householdIncome: number;
+  expectedFamilyContribution: number;
   applicationHash: string;
 };
 
 export default function Applications() {
-  const [applications, setApplications] = useState<Application[]>([]);
+  const [records, setRecords] = useState<Application[]>([]);
   const [open, setOpen] = useState(false);
   const [file, setFile] = useState<File>();
   const [processing, setProcessing] = useState(false);
-
-  useEffect(() => {
-    const getApplications = async () => {
-      const response = await fetch("/api/applications");
-      let userApplications: Application[] = await response.json();
-
-      userApplications = userApplications.map((application) => ({
-        studentIncome: "XXX",
-        householdIncome: "XXX",
-        expectedFamilyContribution: "XXX",
-        applicationHash: application.applicationHash,
-      }));
-      setApplications(userApplications);
-    };
-
-    getApplications();
-  }, []);
 
   const addRecord = () => {
     setOpen(true);
@@ -51,30 +38,21 @@ export default function Applications() {
         "content-type": "multipart/form-data",
       },
     };
-
+    // TODO: call blockchain to create record
     setProcessing(true);
-    const newApplication: Application = {
-      studentIncome: "5000",
-      householdIncome: "50000",
-      expectedFamilyContribution: "5000",
-      applicationHash: "0x123456789",
-    };
-
-    setTimeout(async () => {
+    setTimeout(() => {
       handleClose();
-
-      // TODO: call blockchain to create record
-
-      setApplications([...applications, newApplication]);
-      await fetch("/api/applications", {
-        method: "POST",
-        body: JSON.stringify({
-          applicationHash: newApplication.applicationHash,
-        }),
-      });
+      setRecords([
+        {
+          studentIncome: 5000,
+          householdIncome: 50000,
+          expectedFamilyContribution: 5000,
+          applicationHash: "0x123456789",
+        },
+      ]);
       setProcessing(false);
       setFile(undefined);
-    }, 5000);
+    }, 10000);
   };
 
   const handleClose = () => {
@@ -87,8 +65,33 @@ export default function Applications() {
     }
   };
 
+  const [checkOpen, setCheckOpen] = useState(false);
+
+  const handleCheck = useCallback(() => {
+    setCheckOpen(true);
+  }, []);
+
+  const handleCheckClose = () => {
+    setCheckOpen(false);
+  };
+
   return (
     <main>
+      <Dialog open={checkOpen} onClose={handleCheckClose} maxWidth={'sm'} fullWidth>
+        <DialogTitle>Check Verification</DialogTitle>
+        <DialogContent>
+          <Box maxWidth={'100px'}>
+            <Lottie animationData={animation_lmd0dti7} loop={false} />
+          </Box>
+          <DialogContentText>
+            Verified
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleCheckClose}>Close</Button>
+        </DialogActions>
+      </Dialog>
+
       <div className="relative isolate overflow-hidden pt-6">
         <div className="px-4 sm:px-6 lg:px-8">
           <div className="sm:flex sm:items-center">
@@ -140,43 +143,49 @@ export default function Applications() {
             </DialogActions>
           </Dialog>
 
-          {applications.length > 0 && (
-            <div className="mt-8 flow-root">
-              <div className="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
-                <div className="inline-block min-w-full py-2 align-middle sm:px-6 lg:px-8">
-                  <table className="min-w-full divide-y divide-gray-300">
-                    <thead>
+          <div className="mt-8 flow-root">
+            <div className="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
+              <div className="inline-block min-w-full py-2 align-middle sm:px-6 lg:px-8">
+                <table className="min-w-full divide-y divide-gray-300">
+                  <thead>
+                    <tr>
+                      <th
+                        scope="col"
+                        className="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-3"
+                      >
+                        Student Income
+                      </th>
+                      <th
+                        scope="col"
+                        className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
+                      >
+                        Household Income
+                      </th>
+                      <th
+                        scope="col"
+                        className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
+                      >
+                        Expected Family Contribution
+                      </th>
+                      <th
+                        scope="col"
+                        className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
+                      >
+                        Application Hash
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody className="bg-white">
+                    {records.length === 0 ? (
                       <tr>
-                        <th
-                          scope="col"
-                          className="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-3"
-                        >
-                          Student Income
-                        </th>
-                        <th
-                          scope="col"
-                          className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
-                        >
-                          Household Income
-                        </th>
-                        <th
-                          scope="col"
-                          className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
-                        >
-                          Expected Family Contribution
-                        </th>
-                        <th
-                          scope="col"
-                          className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
-                        >
-                          Application Hash
-                        </th>
+                        <td colSpan={5} className="px-3 py-4 text-center text-sm text-gray-500">
+                          No rows available
+                        </td>
                       </tr>
-                    </thead>
-                    <tbody className="bg-white">
-                      {applications.map((record, index) => (
+                    ) : (
+                      records.map((record, index) => (
                         <tr key={index}>
-                          <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-500 sm:pl-3">
+                          <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-3">
                             {record.studentIncome}
                           </td>
                           <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
@@ -189,21 +198,21 @@ export default function Applications() {
                             {record.applicationHash}
                           </td>
                           <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-                            <a
-                              href="#"
+                            <button
+                              onClick={handleCheck}
                               className="text-indigo-600 hover:text-indigo-900"
                             >
-                              Verify
-                            </a>
+                              Check Eligibility
+                            </button>
                           </td>
                         </tr>
-                      ))}
-                    </tbody>
-                  </table>
-                </div>
+                      ))
+                    )}
+                  </tbody>
+                </table>
               </div>
             </div>
-          )}
+          </div>
         </div>
       </div>
     </main>
