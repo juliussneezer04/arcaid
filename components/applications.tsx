@@ -24,6 +24,7 @@ import { handleVerificationOfRecord } from "@/lib/aleo";
 import { ARCAID_CREATE_FINANCIAL_RECORD_CODE } from "@/config";
 import { cn } from "@/lib/utils";
 import { Account, ProgramManager } from "@aleohq/sdk";
+import { initializeWasm } from "@aleohq/sdk";
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const apps = await prisma.application.findMany();
@@ -57,6 +58,7 @@ export default function Applications({ apps }: { apps?: Application[] }) {
 
   const executeCreation = useCallback(
     async (factor1: number, factor2: number, factor3: number) => {
+      await initializeWasm();
       const programManager = new ProgramManager(
         undefined,
         undefined,

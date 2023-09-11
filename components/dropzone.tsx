@@ -46,7 +46,7 @@ const StyledDropzone: FC<StyledDropzoneProps> = ({
     isDragReject,
     acceptedFiles,
   } = useDropzone({
-    accept: { "image/*": [], "text/*": [] },
+    // accept: { "document/*": [], "text/*": [] },
     onDrop: (acceptedFiles) => {
       setSelectedFile(acceptedFiles[0]);
     },
