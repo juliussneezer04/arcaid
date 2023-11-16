@@ -7,7 +7,7 @@ import { ADMIN_ORG_ID } from "@/lib/constants";
 
 export default async function handler(
   req: NextApiRequest,
-  res: NextApiResponse
+  res: NextApiResponse,
 ) {
   const { userId } = getAuth(req);
   if (!userId) {
@@ -20,12 +20,12 @@ export default async function handler(
       organizationId: ADMIN_ORG_ID,
     });
   const isAdmin = adminMemberships.some(
-    (membership) => membership.publicUserData?.userId === userId
+    (membership) => membership.publicUserData?.userId === userId,
   );
 
   if (req.method === "GET") {
     let applications;
-    if (isAdmin || true) {
+    if (isAdmin) {
       applications = await prisma.application.findMany();
     } else {
       applications = await prisma.application.findMany({

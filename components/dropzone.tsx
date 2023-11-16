@@ -38,20 +38,14 @@ const StyledDropzone: FC<StyledDropzoneProps> = ({
   selectedFile,
   setSelectedFile,
 }) => {
-  const {
-    getRootProps,
-    getInputProps,
-    isFocused,
-    isDragAccept,
-    isDragReject,
-    acceptedFiles,
-  } = useDropzone({
-    // accept: { "document/*": [], "text/*": [] },
-    onDrop: (acceptedFiles) => {
-      setSelectedFile(acceptedFiles[0]);
-    },
-    maxFiles: 1,
-  });
+  const { getRootProps, getInputProps, isFocused, isDragAccept, isDragReject } =
+    useDropzone({
+      accept: { "image/*": [], "text/*": [], "application/pdf": [] },
+      onDrop: (acceptedFiles) => {
+        setSelectedFile(acceptedFiles[0]);
+      },
+      maxFiles: 1,
+    });
 
   const style = useMemo(
     () => ({
