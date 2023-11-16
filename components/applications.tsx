@@ -63,7 +63,13 @@ export default function Applications() {
         undefined,
       );
 
-      // Create a temporary account for the execution of the program
+      // Create a temporary 
+      
+      
+      
+      
+      
+      for the execution of the program
       // TODO Use a fixed account.
       const account = new Account();
       programManager.setAccount(account);
